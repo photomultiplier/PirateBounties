@@ -2,3 +2,7 @@ name: PirateBounties
 version: '0.0.0'
 main: com.github.photomultiplier.piratebounties.PirateBounties
 api-version: '1.14'
+commands:
+  bounty:
+    description: Fetch your or another player's bounty.
+    usage: /<command> [<playername>]

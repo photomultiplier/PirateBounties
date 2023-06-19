@@ -17,12 +17,15 @@
 
 package com.github.photomultiplier.piratebounties;
 
+import com.github.photomultiplier.piratebounties.commands.BountyCommand;
+import com.github.photomultiplier.piratebounties.managers.BountyManager;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * The main class of the plugin.
  *
- * For now it just prints "Hello, world!".
+ * Initializes managers and registers commands and listeners.
  */
 public class PirateBounties extends JavaPlugin {
 	/**
@@ -31,7 +34,13 @@ public class PirateBounties extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		System.out.println("PirateBounties loading...");
-		System.out.println("Hello, world!");
+
+		// Config utils
+		BountyManager.init(this);
+
+		// Commands
+		getCommand("bounty").setExecutor(new BountyCommand());
+
 		System.out.println("PirateBounties loaded.");
 	}
 }
