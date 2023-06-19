@@ -18,6 +18,7 @@
 package com.github.photomultiplier.piratebounties;
 
 import com.github.photomultiplier.piratebounties.commands.BountyCommand;
+import com.github.photomultiplier.piratebounties.listeners.KillListener;
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,6 +41,9 @@ public class PirateBounties extends JavaPlugin {
 
 		// Commands
 		getCommand("bounty").setExecutor(new BountyCommand());
+
+		// Listeners
+		getServer().getPluginManager().registerEvents(new KillListener(), this);
 
 		System.out.println("PirateBounties loaded.");
 	}

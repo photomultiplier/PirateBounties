@@ -46,4 +46,28 @@ public class BountyManager {
 			}
 		}
 	}
+
+	/**
+	 * Sets a player's bounty.
+	 *
+	 * @param p The player of interest.
+	 * @param newBounty The new bounty to set.
+	 */
+	private static void setBounty(Player p, int newBounty) {
+		if (key != null) {
+			PersistentDataContainer pdc = p.getPersistentDataContainer();
+			pdc.set(key, PersistentDataType.INTEGER, newBounty);
+		}
+	}
+
+	/**
+	 * Take note of a PVP kill.
+	 *
+	 * @param killed The player who died.
+	 * @param killer The player who killed.
+	 */
+	public static void registerKill(Player killed, Player killer) {
+		setBounty(killed, getBounty(killed) / 2);
+		setBounty(killer, getBounty(killer) + 1);
+	}
 }
