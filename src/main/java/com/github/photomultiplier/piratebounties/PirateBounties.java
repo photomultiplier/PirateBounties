@@ -35,6 +35,7 @@ public class PirateBounties extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		System.out.println("PirateBounties loading...");
+		saveDefaultConfig();
 
 		// Config utils
 		BountyManager.init(this);

@@ -17,6 +17,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class BountyManager {
 	static NamespacedKey key;
+	static int bountyIncreaseAmount = 1;
 
 	/**
 	 * Initializes the manager.
@@ -25,6 +26,7 @@ public class BountyManager {
 	 */
 	public static void init(Plugin pg) {
 		key = new NamespacedKey(pg, "bounty");
+		bountyIncreaseAmount = pg.getConfig().getInt("bountyIncreaseAmount");
 	}
 
 	/**
@@ -68,6 +70,6 @@ public class BountyManager {
 	 */
 	public static void registerKill(Player killed, Player killer) {
 		setBounty(killed, getBounty(killed) / 2);
-		setBounty(killer, getBounty(killer) + 1);
+		setBounty(killer, getBounty(killer) + bountyIncreaseAmount);
 	}
 }
