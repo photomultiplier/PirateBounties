@@ -6,3 +6,6 @@ commands:
   bounty:
     description: Fetch your or another player's bounty.
     usage: /<command> [<playername>]
+  emperors:
+    description: See who the emperors are.
+    usage: /<command>
