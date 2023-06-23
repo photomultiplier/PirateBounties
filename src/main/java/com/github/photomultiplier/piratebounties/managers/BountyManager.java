@@ -4,6 +4,8 @@
 
 package com.github.photomultiplier.piratebounties.managers;
 
+import com.github.photomultiplier.piratebounties.PirateBounties;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -21,10 +23,9 @@ public abstract class BountyManager {
 
 	/**
 	 * Initializes the manager.
-	 *
-	 * @param pg A reference to the plugin.  Used to create the NamespacedKey.
 	 */
-	public static void init(Plugin pg) {
+	public static void init() {
+		Plugin pg = PirateBounties.getPlugin();
 		key = new NamespacedKey(pg, "bounty");
 		bountyIncreaseAmount = pg.getConfig().getInt("bountyIncreaseAmount");
 	}

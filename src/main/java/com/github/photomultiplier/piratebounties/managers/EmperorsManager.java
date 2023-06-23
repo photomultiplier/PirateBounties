@@ -6,6 +6,8 @@ package com.github.photomultiplier.piratebounties.managers;
 
 import java.util.Collection;
 
+import com.github.photomultiplier.piratebounties.PirateBounties;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -52,13 +54,12 @@ public abstract class EmperorsManager {
 
 	/**
 	 * Initializes the manager.
-	 *
-	 * @param pg A reference to the plugin.
 	 */
-	public static void init(Plugin pg) {
-		FileConfiguration conf = pg.getConfig();
-		emperorThreshold = conf.getInt("emperorThreshold");
-		emperorAmount = conf.getInt("emperorAmount");
+	public static void init() {
+		Plugin pg = PirateBounties.getPlugin();
+		FileConfiguration config = pg.getConfig();
+		emperorThreshold = config.getInt("emperorThreshold");
+		emperorAmount = config.getInt("emperorAmount");
 
 		scheduler.runTaskTimer(pg, () -> update(), 20L, 20L * 60L * 60L * 2L);
 	}

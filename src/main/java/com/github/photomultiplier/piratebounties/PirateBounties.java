@@ -32,17 +32,21 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Initializes managers and registers commands and listeners.
  */
 public class PirateBounties extends JavaPlugin {
+	static JavaPlugin plugin;
+
 	/**
 	 * Method called on plugin initialization.
 	 */
 	@Override
 	public void onEnable() {
+		plugin = this;
+
 		System.out.println("PirateBounties loading...");
 		saveDefaultConfig();
 
 		// Managers
-		BountyManager.init(this);
-		EmperorsManager.init(this);
+		BountyManager.init();
+		EmperorsManager.init();
 
 		// Commands
 		getCommand("bounty").setExecutor(new BountyCommand());
@@ -53,5 +57,14 @@ public class PirateBounties extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
 		System.out.println("PirateBounties loaded.");
+	}
+
+	/**
+	 * Return a pointer to the plugin instance.
+	 *
+	 * @return The instance.
+	 */
+	public static JavaPlugin getPlugin() {
+		return plugin;
 	}
 }
