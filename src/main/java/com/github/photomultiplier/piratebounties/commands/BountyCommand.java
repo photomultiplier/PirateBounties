@@ -29,13 +29,15 @@ public class BountyCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args.length == 0) {
-			if (sender instanceof Player p) {
+			if (sender instanceof Player) {
+				Player p = (Player) sender;
 				p.sendMessage("You have a bounty of " + ChatColor.YELLOW + ChatColor.BOLD + "$" + BountyManager.getBounty(p));
 			}
 		} else {
 			Player t = Bukkit.getPlayer(args[0]);
 
-			if (sender instanceof Player p) {
+			if (sender instanceof Player) {
+				Player p = (Player) sender;
 				if (t == null) {
 					p.sendMessage(ChatColor.RED + "The player " + ChatColor.BOLD + args[0] + ChatColor.RED + " does not exist!");
 				} else {

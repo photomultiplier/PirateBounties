@@ -31,7 +31,8 @@ public class EmperorsCommand implements CommandExecutor {
 		Emperor[] leaderBoard = EmperorsManager.getLeaderBoard();
 
 		if (leaderBoard[0] == null) {
-			if (sender instanceof Player p) {
+			if (sender instanceof Player) {
+				Player p = (Player) sender;
 				p.sendMessage(ChatColor.YELLOW + "There are no emperors!");
 				p.sendMessage("Earn at least " + ChatColor.YELLOW + ChatColor.BOLD + "$" + EmperorsManager.getEmperorThreshold()
 						+ ChatColor.RESET
@@ -40,7 +41,8 @@ public class EmperorsCommand implements CommandExecutor {
 				System.out.println("There are no emperors!");
 			}
 		} else {
-			if (sender instanceof Player p) {
+			if (sender instanceof Player) {
+				Player p = (Player) sender;
 				p.sendMessage("The emperors are:");
 			}
 			for (int i = 0; i < leaderBoard.length; i++) {
@@ -49,7 +51,8 @@ public class EmperorsCommand implements CommandExecutor {
 				if (emperor == null) {
 					break;
 				} else {
-					if (sender instanceof Player p) {
+					if (sender instanceof Player) {
+				Player p = (Player) sender;
 						p.sendMessage((i + 1) + ". " + ChatColor.YELLOW + emperor.displayName + ChatColor.RESET + ", "
 								+ ChatColor.YELLOW + ChatColor.BOLD + "$" + emperor.bounty);
 					} else {

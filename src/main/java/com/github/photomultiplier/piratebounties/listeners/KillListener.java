@@ -23,7 +23,9 @@ public class KillListener implements Listener {
 	 */
 	@EventHandler
 	public void onKill(EntityDamageByEntityEvent e) {
-		if (e.getEntity() instanceof Player killed && e.getDamager() instanceof Player killer) {
+		if (e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
+			Player killed = (Player) e.getEntity();
+			Player killer = (Player) e.getDamager();
 			if (killed.getHealth() - e.getFinalDamage() <= 0.) {
 				BountyManager.registerKill(killed, killer);
 				EmperorsManager.updateSingle(killed);
