@@ -54,6 +54,21 @@ configuration.  Here are the parameters that can be configured:
       Error message printed when an argument failed to parse.
       Placeholders: `%value%`, the value typed by the user; `%type%`,
       the needed type.
+    - `noPermission`, default:
+      ```yaml
+      - "&cYou aren't permitted to run this command!"
+      ```
+      Error message printed when the user trying to run the command
+      hasn't the necessary permission.  Placeholders: `%player%`, the
+      player trying to run the command; `%permission%`, the permission
+      required to run the command.
+    - `bountyDisabled`, default:
+      ```yaml
+      - "&cPlayer &l%player%&c doesn't have a bounty!"
+      ```
+      Error message printed when trying to access the bounty of a
+      player who has it disabled.  Placeholders: `%player%`, the player
+      trying to run the command.
 - Category `bountyCommand`: configures the `/bounty` command.
     - Category `messages`: configures the responses to the command.
       Each field is a list of strings: each item is printed on a
@@ -107,6 +122,17 @@ configuration.  Here are the parameters that can be configured:
           ```
           Response when there aren't any emperors.  Placeholders: `%threshold%`,
           the minimum bounty required to be an emperor.
+
+## Permissions
+
+The plugin uses the following permissions:
+
+- `pirateobounties.bounties.enabled` enables bounty on a player.  If
+  this is disabled, the player's bounty can't be read or set.
+- `pirateobounties.bounties.get` enables use of the `/bounty` command.
+- `pirateobounties.bounties.set` enables use of the `/setbounty`
+  command.
+- `pirateobounties.emperors.get` enables use of the `/emperors` command.
 
 ## How to use
 
