@@ -1,6 +1,7 @@
-bountyIncreaseAmount: 1
-emperorAmount: 4
-emperorThreshold: 1
+general:
+  bountyIncrease: 1
+  emperorAmount: 4
+  emperorThreshold: 1
 commandsErrorMessages:
   noPlayer:
     - "&cInvalid command: &l%player%&c is offline or doesn't exist!"

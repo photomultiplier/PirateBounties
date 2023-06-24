@@ -58,8 +58,8 @@ public abstract class EmperorsManager {
 	public static void init() {
 		Plugin pg = PirateBounties.getPlugin();
 		FileConfiguration config = pg.getConfig();
-		emperorThreshold = config.getInt("emperorThreshold");
-		emperorAmount = config.getInt("emperorAmount");
+		emperorThreshold = config.getInt("general.emperorThreshold");
+		emperorAmount = config.getInt("general.emperorAmount");
 
 		scheduler.runTaskTimer(pg, () -> update(), 20L, 20L * 60L * 60L * 2L);
 	}

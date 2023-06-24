@@ -27,7 +27,7 @@ public abstract class BountyManager {
 	public static void init() {
 		Plugin pg = PirateBounties.getPlugin();
 		key = new NamespacedKey(pg, "bounty");
-		bountyIncreaseAmount = pg.getConfig().getInt("bountyIncreaseAmount");
+		bountyIncreaseAmount = pg.getConfig().getInt("general.bountyIncrease");
 	}
 
 	/**
