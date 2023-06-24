@@ -30,9 +30,9 @@ public class BountyCommand implements CommandExecutor {
 	 */
 	public BountyCommand() {
 		FileConfiguration config = PirateBounties.getPlugin().getConfig();
-		selfMessage = TextUtils.parseMessageFromConfig(config.getStringList("bountyCommand.messages.self"));
-		otherMessage = TextUtils.parseMessageFromConfig(config.getStringList("bountyCommand.messages.other"));
-		noPlayerMessage = TextUtils.parseMessageFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
+		selfMessage = TextUtils.msgFromConfig(config.getStringList("bountyCommand.messages.self"));
+		otherMessage = TextUtils.msgFromConfig(config.getStringList("bountyCommand.messages.other"));
+		noPlayerMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
 	}
 
 	/**

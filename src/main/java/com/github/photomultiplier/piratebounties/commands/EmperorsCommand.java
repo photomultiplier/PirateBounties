@@ -30,9 +30,9 @@ public class EmperorsCommand implements CommandExecutor {
 	 */
 	public EmperorsCommand() {
 		FileConfiguration config = PirateBounties.getPlugin().getConfig();
-		listHeaderMessage = TextUtils.parseMessageFromConfig(config.getStringList("emperorsCommand.messages.listHeader"));
-		listLineMessage = TextUtils.parseMessageFromConfig(config.getStringList("emperorsCommand.messages.listLine"));
-		noEmperorsMessage = TextUtils.parseMessageFromConfig(config.getStringList("emperorsCommand.messages.noEmperors"));
+		listHeaderMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.listHeader"));
+		listLineMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.listLine"));
+		noEmperorsMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.noEmperors"));
 	}
 
 	/**

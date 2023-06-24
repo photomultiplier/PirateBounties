@@ -32,10 +32,10 @@ public class SetBountyCommand implements CommandExecutor {
 	 */
 	public SetBountyCommand() {
 		FileConfiguration config = PirateBounties.getPlugin().getConfig();
-		okMessage = TextUtils.parseMessageFromConfig(config.getStringList("setBountyCommand.messages.ok"));
-		insufficientArgumentsMessage = TextUtils.parseMessageFromConfig(config.getStringList("commandsErrorMessages.insufficientArguments"));
-		wrongTypeMessage = TextUtils.parseMessageFromConfig(config.getStringList("commandsErrorMessages.wrongType"));
-		noPlayerMessage = TextUtils.parseMessageFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
+		okMessage = TextUtils.msgFromConfig(config.getStringList("setBountyCommand.messages.ok"));
+		insufficientArgumentsMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.insufficientArguments"));
+		wrongTypeMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.wrongType"));
+		noPlayerMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
 	}
 
 	/**

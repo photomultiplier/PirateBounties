@@ -21,7 +21,7 @@ public abstract class TextUtils {
 	 * @return The parsed message.
 	 * @see <a href="https://minecraft.fandom.com/wiki/Formatting_codes">formatting codes</a>
 	 */
-	public static String parseMessageFromConfig(List<String> message) {
+	public static String msgFromConfig(List<String> message) {
 		String joinedMessage = ChatColor.translateAlternateColorCodes('&', String.join("\n", message));
 		return joinedMessage;
 	}
