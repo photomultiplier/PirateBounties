@@ -1,5 +1,5 @@
 name: PirateBounties
-version: "1.0.1"
+version: "1.0.2"
 main: com.github.photomultiplier.piratebounties.PirateBounties
 api-version: "1.14"
 commands:
