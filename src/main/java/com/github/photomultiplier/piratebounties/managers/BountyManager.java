@@ -40,6 +40,10 @@ public abstract class BountyManager {
 		if (key == null) {
 			return 0;
 		} else {
+			if (!p.hasPermission("piratebounties.bounties.enabled")) {
+				return 0;
+			}
+
 			PersistentDataContainer pdc = p.getPersistentDataContainer();
 			if (pdc.has(key, PersistentDataType.INTEGER)) {
 				return pdc.get(key, PersistentDataType.INTEGER);
@@ -58,6 +62,10 @@ public abstract class BountyManager {
 	 */
 	public static void setBounty(Player p, int newBounty) {
 		if (key != null) {
+			if (!p.hasPermission("piratebounties.bounties.enabled")) {
+				return;
+			}
+
 			PersistentDataContainer pdc = p.getPersistentDataContainer();
 			pdc.set(key, PersistentDataType.INTEGER, newBounty);
 		}

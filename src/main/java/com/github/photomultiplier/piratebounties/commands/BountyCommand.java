@@ -24,6 +24,8 @@ public class BountyCommand implements CommandExecutor {
 	String selfMessage;
 	String otherMessage;
 	String noPlayerMessage;
+	String noPermissionMessage;
+	String bountyDisabledMessage;
 
 	/**
 	 * Initializes the command, loading responses from the config file.
@@ -33,6 +35,8 @@ public class BountyCommand implements CommandExecutor {
 		selfMessage = TextUtils.msgFromConfig(config.getStringList("bountyCommand.messages.self"));
 		otherMessage = TextUtils.msgFromConfig(config.getStringList("bountyCommand.messages.other"));
 		noPlayerMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
+		noPermissionMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPermission"));
+		bountyDisabledMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.bountyDisabled"));
 	}
 
 	/**
@@ -46,29 +50,51 @@ public class BountyCommand implements CommandExecutor {
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (args.length == 0) {
-			if (sender instanceof Player) {
-				Player p = (Player) sender;
-				p.sendMessage(TextUtils.replace(selfMessage,
+		Player p = null;
+
+		if (sender instanceof Player) {
+			p = (Player) sender;
+			if (!p.hasPermission("piratebounties.bounties.get")) {
+				p.sendMessage(TextUtils.replace(noPermissionMessage,
 				                                new ParamSubst("player", p.getDisplayName()),
-				                                new ParamSubst("bounty", BountyManager.getBounty(p))));
+				                                new ParamSubst("permission", "piratebounties.bounties.get")));
+				return true;
+			}
+		}
+
+		String message;
+
+		if (args.length == 0) {
+			if (p != null) {
+				if (p.hasPermission("piratebounties.bounties.enabled")) {
+					message = TextUtils.replace(selfMessage,
+					                            new ParamSubst("player", p.getDisplayName()),
+					                            new ParamSubst("bounty", BountyManager.getBounty(p)));
+				} else {
+					message = TextUtils.replace(bountyDisabledMessage,
+					                            new ParamSubst("player", p.getDisplayName()));
+				}
+
+				p.sendMessage(message);
 			}
 		} else {
 			Player t = Bukkit.getPlayer(args[0]);
-
-			String message;
 
 			if (t == null) {
 				message = TextUtils.replace(noPlayerMessage,
 				                            new ParamSubst("player", args[0]));
 			} else {
-				message = TextUtils.replace(otherMessage,
-				                            new ParamSubst("player", t.getDisplayName()),
-				                            new ParamSubst("bounty", BountyManager.getBounty(t)));
+				if (t.hasPermission("piratebounties.bounties.enabled")) {
+					message = TextUtils.replace(otherMessage,
+					                            new ParamSubst("player", t.getDisplayName()),
+					                            new ParamSubst("bounty", BountyManager.getBounty(t)));
+				} else {
+					message = TextUtils.replace(bountyDisabledMessage,
+					                            new ParamSubst("player", t.getDisplayName()));
+				}
 			}
 
-			if (sender instanceof Player) {
-				Player p = (Player) sender;
+			if (p != null) {
 				p.sendMessage(message);
 			} else {
 				System.out.println(ChatColor.stripColor(message));

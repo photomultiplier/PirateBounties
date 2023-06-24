@@ -26,6 +26,8 @@ public class SetBountyCommand implements CommandExecutor {
 	String insufficientArgumentsMessage;
 	String wrongTypeMessage;
 	String noPlayerMessage;
+	String noPermissionMessage;
+	String bountyDisabledMessage;
 
 	/**
 	 * Initializes the command, loading responses from the config file.
@@ -36,6 +38,8 @@ public class SetBountyCommand implements CommandExecutor {
 		insufficientArgumentsMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.insufficientArguments"));
 		wrongTypeMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.wrongType"));
 		noPlayerMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
+		noPermissionMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPermission"));
+		bountyDisabledMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.bountyDisabled"));
 	}
 
 	/**
@@ -49,6 +53,17 @@ public class SetBountyCommand implements CommandExecutor {
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		Player p = null;
+
+		if (sender instanceof Player) {
+			p = (Player) sender;
+			if (!p.hasPermission("piratebounties.bounties.set")) {
+				p.sendMessage(TextUtils.replace(noPermissionMessage,
+				                                new ParamSubst("player", p.getDisplayName()),
+				                                new ParamSubst("permission", "piratebounties.bounties.set")));
+				return true;
+			}
+		}
 		String message;
 
 		if (args.length < 2) {
@@ -62,23 +77,27 @@ public class SetBountyCommand implements CommandExecutor {
 				message = TextUtils.replace(noPlayerMessage,
 				                            new ParamSubst("player", args[0]));
 			} else {
-				try {
-					int newBounty = Integer.parseInt(args[1]);
-					BountyManager.setBounty(t, newBounty);
-					EmperorsManager.updateSingle(t);
-					message = TextUtils.replace(okMessage,
-					                            new ParamSubst("player", t.getDisplayName()),
-					                            new ParamSubst("bounty", newBounty));
-				} catch (NumberFormatException e) {
-					message = TextUtils.replace(wrongTypeMessage,
-					                            new ParamSubst("value", args[1]),
-					                            new ParamSubst("type", "number"));
+				if (t.hasPermission("piratebounties.bounties.enabled")) {
+					try {
+						int newBounty = Integer.parseInt(args[1]);
+						BountyManager.setBounty(t, newBounty);
+						EmperorsManager.updateSingle(t);
+						message = TextUtils.replace(okMessage,
+						                            new ParamSubst("player", t.getDisplayName()),
+						                            new ParamSubst("bounty", newBounty));
+					} catch (NumberFormatException e) {
+						message = TextUtils.replace(wrongTypeMessage,
+						                            new ParamSubst("value", args[1]),
+						                            new ParamSubst("type", "number"));
+					}
+				} else {
+					message = TextUtils.replace(bountyDisabledMessage,
+					                            new ParamSubst("player", p.getDisplayName()));
 				}
 			}
 		}
 
-		if (sender instanceof Player) {
-			Player p = (Player) sender;
+		if (p != null) {
 			p.sendMessage(message);
 		} else {
 			System.out.println(ChatColor.stripColor(message));

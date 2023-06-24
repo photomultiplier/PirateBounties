@@ -9,6 +9,10 @@ commandsErrorMessages:
     - "&cInvalid command: not enough arguments!"
   wrongType:
     - "&cInvalid command: &l%value%&c is not a &l%type%&c!"
+  noPermission:
+    - "&cYou aren't permitted to run this command!"
+  bountyDisabled:
+    - "&cPlayer &l%player%&c doesn't have a bounty!"
 bountyCommand:
   messages:
     self:

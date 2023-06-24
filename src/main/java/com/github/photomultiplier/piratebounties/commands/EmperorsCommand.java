@@ -24,6 +24,7 @@ public class EmperorsCommand implements CommandExecutor {
 	String listHeaderMessage;
 	String listLineMessage;
 	String noEmperorsMessage;
+	String noPermissionMessage;
 
 	/**
 	 * Initializes the command, loading responses from the config file.
@@ -33,6 +34,7 @@ public class EmperorsCommand implements CommandExecutor {
 		listHeaderMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.listHeader"));
 		listLineMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.listLine"));
 		noEmperorsMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.noEmperors"));
+		noPermissionMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPermission"));
 	}
 
 	/**
@@ -46,6 +48,18 @@ public class EmperorsCommand implements CommandExecutor {
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		Player p = null;
+
+		if (sender instanceof Player) {
+			p = (Player) sender;
+			if (!p.hasPermission("piratebounties.emperors.get")) {
+				p.sendMessage(TextUtils.replace(noPermissionMessage,
+				                                new ParamSubst("player", p.getDisplayName()),
+				                                new ParamSubst("permission", "piratebounties.emperors.get")));
+				return true;
+			}
+		}
+
 		Emperor[] leaderBoard = EmperorsManager.getLeaderBoard();
 		String message;
 
@@ -53,8 +67,7 @@ public class EmperorsCommand implements CommandExecutor {
 			message = TextUtils.replace(noEmperorsMessage,
 			                            new ParamSubst("threshold", EmperorsManager.getEmperorThreshold()));
 
-			if (sender instanceof Player) {
-				Player p = (Player) sender;
+			if (p != null) {
 				p.sendMessage(message);
 			} else {
 				System.out.println(ChatColor.stripColor(message));
@@ -62,8 +75,7 @@ public class EmperorsCommand implements CommandExecutor {
 		} else {
 			message = listHeaderMessage;
 
-			if (sender instanceof Player) {
-				Player p = (Player) sender;
+			if (p != null) {
 				p.sendMessage(listHeaderMessage);
 			} else {
 				System.out.println(ChatColor.stripColor(message));
@@ -80,8 +92,7 @@ public class EmperorsCommand implements CommandExecutor {
 					                            new ParamSubst("player", emperor.displayName),
 					                            new ParamSubst("bounty", emperor.bounty));
 
-					if (sender instanceof Player) {
-						Player p = (Player) sender;
+					if (p != null) {
 						p.sendMessage(message);
 					} else {
 						System.out.println(ChatColor.stripColor(message));
