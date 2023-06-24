@@ -4,19 +4,37 @@
 
 package com.github.photomultiplier.piratebounties.commands;
 
+import com.github.photomultiplier.piratebounties.PirateBounties;
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
+import com.github.photomultiplier.piratebounties.utils.ParamSubst;
+import com.github.photomultiplier.piratebounties.utils.TextUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 /**
  * A command to retrieve a player's bounty ingame.
  */
 public class BountyCommand implements CommandExecutor {
+	String selfMessage;
+	String otherMessage;
+	String noPlayerMessage;
+
+	/**
+	 * Initializes the command, loading responses from the config file.
+	 */
+	public BountyCommand() {
+		FileConfiguration config = PirateBounties.getPlugin().getConfig();
+		selfMessage = TextUtils.parseMessageFromConfig(config.getStringList("bountyCommand.messages.self"));
+		otherMessage = TextUtils.parseMessageFromConfig(config.getStringList("bountyCommand.messages.other"));
+		noPlayerMessage = TextUtils.parseMessageFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
+	}
+
 	/**
 	 * The actual command.
 	 *
@@ -31,25 +49,29 @@ public class BountyCommand implements CommandExecutor {
 		if (args.length == 0) {
 			if (sender instanceof Player) {
 				Player p = (Player) sender;
-				p.sendMessage("You have a bounty of " + ChatColor.YELLOW + ChatColor.BOLD + "$" + BountyManager.getBounty(p));
+				p.sendMessage(TextUtils.replace(selfMessage,
+				                                new ParamSubst("player", p.getDisplayName()),
+				                                new ParamSubst("bounty", BountyManager.getBounty(p))));
 			}
 		} else {
 			Player t = Bukkit.getPlayer(args[0]);
 
+			String message;
+
+			if (t == null) {
+				message = TextUtils.replace(noPlayerMessage,
+				                            new ParamSubst("player", args[0]));
+			} else {
+				message = TextUtils.replace(otherMessage,
+				                            new ParamSubst("player", t.getDisplayName()),
+				                            new ParamSubst("bounty", BountyManager.getBounty(t)));
+			}
+
 			if (sender instanceof Player) {
 				Player p = (Player) sender;
-				if (t == null) {
-					p.sendMessage(ChatColor.RED + "The player " + ChatColor.BOLD + args[0] + ChatColor.RED + " does not exist!");
-				} else {
-					p.sendMessage(ChatColor.YELLOW + t.getDisplayName() + ChatColor.RESET + " has a bounty of " + ChatColor.YELLOW
-							+ ChatColor.BOLD + "$" + BountyManager.getBounty(t));
-				}
+				p.sendMessage(message);
 			} else {
-				if (t == null) {
-					System.out.println("The player " + args[0] + " does not exist");
-				} else {
-					System.out.println(t.getDisplayName() + " has a bounty of $" + BountyManager.getBounty(t));
-				}
+				System.out.println(ChatColor.stripColor(message));
 			}
 		}
 		return true;

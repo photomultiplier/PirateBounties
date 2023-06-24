@@ -10,7 +10,7 @@ the `plugins` directory of your Spigot installation.
 ## How it works
 
 The plugin introduces a bounty mechanic.  Each player starts with a
-bounty of $0.  When player A kills player B, A's bounty will increase
+bounty of 0.  When player A kills player B, A's bounty will increase
 of a fixed, configurable amount and B's bounty will halve.
 
 The players with the highest bounties above a certain threshold become

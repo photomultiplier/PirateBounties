@@ -1,3 +1,21 @@
 bountyIncreaseAmount: 1
 emperorAmount: 4
 emperorThreshold: 1
+commandsErrorMessages:
+  noPlayer:
+    - "&cInvalid command: &l%player%&c is offline or doesn't exist!"
+bountyCommand:
+  messages:
+    self:
+      - "You have a bounty of &e&l$%bounty%"
+    other:
+      - "&e%player%&r has a bounty of &e&l$%bounty%"
+emperorsCommand:
+  messages:
+    listHeader:
+      - "The emperors are:"
+    listLine:
+      - "%index%. &e%player%&r, &e&l$%bounty%"
+    noEmperors:
+      - "&eThere are no emperors!"
+      - "&rEarn at least &e&l$%threshold%&r to become one!"
