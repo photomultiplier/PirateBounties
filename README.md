@@ -5,7 +5,7 @@ A Spigot plugin adding bounties to minecraft.
 ## How to install
 
 Download the `.jar` file from the "Releases" section and copy it in
-the `plugins` directory of yout Spigot installation.
+the `plugins` directory of your Spigot installation.
 
 ## How it works
 
@@ -23,7 +23,7 @@ directory called `PirateBounties` in the `plugins` directory.  Inside
 you will find a file named `config.yml` containing the default
 configuration.  There are three parameters which can be configured:
 
-- `bountyIncreseAmount`, default 1.  How much the bounty will increase
+- `bountyIncreaseAmount`, default 1.  How much the bounty will increase
   on a kill.
 - `emperorAmount`, default 4.  How many emperors there will be.
 - `emperorThreshold`, default 1.  The minimum bounty required to be an emperor.
