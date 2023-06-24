@@ -56,7 +56,7 @@ public abstract class BountyManager {
 	 * @param p The player of interest.
 	 * @param newBounty The new bounty to set.
 	 */
-	private static void setBounty(Player p, int newBounty) {
+	public static void setBounty(Player p, int newBounty) {
 		if (key != null) {
 			PersistentDataContainer pdc = p.getPersistentDataContainer();
 			pdc.set(key, PersistentDataType.INTEGER, newBounty);

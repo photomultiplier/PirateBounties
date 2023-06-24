@@ -5,6 +5,10 @@ general:
 commandsErrorMessages:
   noPlayer:
     - "&cInvalid command: &l%player%&c is offline or doesn't exist!"
+  insufficientArguments:
+    - "&cInvalid command: not enough arguments!"
+  wrongType:
+    - "&cInvalid command: &l%value%&c is not a &l%type%&c!"
 bountyCommand:
   messages:
     self:
@@ -20,3 +24,7 @@ emperorsCommand:
     noEmperors:
       - "&eThere are no emperors!"
       - "&rEarn at least &e&l$%threshold%&r to become one!"
+setBountyCommand:
+  messages:
+    ok:
+      - "Set &e%player%&r's bounty to &e&l$%bounty%"

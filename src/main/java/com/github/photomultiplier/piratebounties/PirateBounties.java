@@ -19,6 +19,7 @@ package com.github.photomultiplier.piratebounties;
 
 import com.github.photomultiplier.piratebounties.commands.BountyCommand;
 import com.github.photomultiplier.piratebounties.commands.EmperorsCommand;
+import com.github.photomultiplier.piratebounties.commands.SetBountyCommand;
 import com.github.photomultiplier.piratebounties.listeners.JoinListener;
 import com.github.photomultiplier.piratebounties.listeners.KillListener;
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
@@ -50,6 +51,7 @@ public class PirateBounties extends JavaPlugin {
 
 		// Commands
 		getCommand("bounty").setExecutor(new BountyCommand());
+		getCommand("setbounty").setExecutor(new SetBountyCommand());
 		getCommand("emperors").setExecutor(new EmperorsCommand());
 
 		// Listeners
