@@ -1,7 +1,7 @@
 name: PirateBounties
-version: '1.0.1'
+version: "1.0.1"
 main: com.github.photomultiplier.piratebounties.PirateBounties
-api-version: '1.14'
+api-version: "1.14"
 commands:
   bounty:
     description: Fetch your or another player's bounty.
