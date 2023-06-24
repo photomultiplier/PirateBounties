@@ -21,12 +21,67 @@ emperors.  There's also a maximum number of emperors.
 After running the plugin for the first time, Spigot will create a
 directory called `PirateBounties` in the `plugins` directory.  Inside
 you will find a file named `config.yml` containing the default
-configuration.  There are three parameters which can be configured:
+configuration.  Here are the parameters that can be configured:
 
-- `bountyIncreaseAmount`, default 1.  How much the bounty will increase
-  on a kill.
-- `emperorAmount`, default 4.  How many emperors there will be.
-- `emperorThreshold`, default 1.  The minimum bounty required to be an emperor.
+- Category `general`: generic settings, affecting the core mechanic of
+  the plugin.
+    - `bountyIncrease`, default 1.  How much the bounty will increase
+      on a kill.
+    - `emperorAmount`, default 4.  How many emperors there will be.
+    - `emperorThreshold`, default 1.  The minimum bounty required to
+      be an emperor.
+- Category `commandsErrorMessages`: error messages common to all the
+  commands.  Each field is a list of strings: each item is printed on
+  a different line.  Each field has some placeholders (for example
+  `%player%`) which will then be replaced by the command.
+    - `noPlayer`, default:
+      ```yaml
+      - "&cInvalid command: &l%player%&c is offline or doesn't exist!"
+      ```
+      Error message printed when the requested player doesn't exist.
+      Placeholders: `%player%`, the name typed by the user.
+- Category `bountyCommand`: configures the `/bounty` command.
+    - Category `messages`: configures the responses to the command.
+      Each field is a list of strings: each item is printed on a
+      different line.  Each field has some placeholders (for example
+      `%player%`) which will then be replaced by the command.
+        - `self`, default:
+          ```yaml
+          - "You have a bounty of &e&l$%bounty%"
+          ```
+          Response to `/bounty`.  Placeholders: `%player%`, the name
+          of the player; `%bounty%`, his bounty.
+        - `other`, default:
+          ```yaml
+          - "&e%player%&r has a bounty of &e&l$%bounty%"
+          ```
+          Response to `/bounty <playername>`.  Placeholders:
+          `%player%`, the name of the other player; `%bounty%`, his
+          bounty.
+- Category `emperorsCommand`: configures the `/emperors` command.
+    - Category `messages`: configures the responses to the command.
+      Each field is a list of strings: each item is printed on a
+      different line.  Each field has some placeholders (for example
+      `%player%`) which will then be replaced by the command.
+        - `listHeader`, default:
+          ```yaml
+          - "The emperors are:"
+          ```
+          The header of the emperors list.  No placeholders.
+        - `listLine`, default:
+          ```yaml
+          - "%index%. &e%player%&r, &e&l$%bounty%"
+          ```
+          The items of the emperors list.  Placeholders: `%index%`,
+          the number of the item; `%player%`, the name of the emperor;
+          `%bounty%`, his bounty.
+        - `noEmperors`, default:
+          ```yaml
+          - "&eThere are no emperors!"
+          - "&rEarn at least &e&l$%threshold%&r to become one!"
+          ```
+          Response when there aren't any emperors.  Placeholders: `%threshold%`,
+          the minimum bounty required to be an emperor.
 
 ## How to use
 
