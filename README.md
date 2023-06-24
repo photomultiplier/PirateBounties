@@ -40,6 +40,20 @@ configuration.  Here are the parameters that can be configured:
       ```
       Error message printed when the requested player doesn't exist.
       Placeholders: `%player%`, the name typed by the user.
+    - `insufficientArguments`, default:
+      ```yaml
+      - "&cInvalid command: not enough arguments!"
+      ```
+      Error message printed when a command is called with an
+      insufficient number of arguments.  Placeholders: `%given%`, the
+      number of arguments given; `%needed%`, the minimum number of arguments.
+    - `wrongType`, default:
+      ```yaml
+      - "&cInvalid command: &l%value%&c is not a &l%type%&c!"
+      ```
+      Error message printed when an argument failed to parse.
+      Placeholders: `%value%`, the value typed by the user; `%type%`,
+      the needed type.
 - Category `bountyCommand`: configures the `/bounty` command.
     - Category `messages`: configures the responses to the command.
       Each field is a list of strings: each item is printed on a
@@ -58,6 +72,17 @@ configuration.  Here are the parameters that can be configured:
           Response to `/bounty <playername>`.  Placeholders:
           `%player%`, the name of the other player; `%bounty%`, his
           bounty.
+- Category `setBountyCommand`: configures the `/setbounty` command.
+    - Category `messages`: configures the responses to the command.
+      Each field is a list of strings: each item is printed on a
+      different line.  Each field has some placeholders (for example
+      `%player%`) which will then be replaced by the command.
+        - `ok`, default:
+          ```yaml
+          - "Set &e%player%&r's bounty to &e&l$%bounty%"
+          ```
+          Response to successful invocation. Placeholders: `%player%`,
+          the name of the player; `%bounty%`, his new bounty.
 - Category `emperorsCommand`: configures the `/emperors` command.
     - Category `messages`: configures the responses to the command.
       Each field is a list of strings: each item is printed on a
@@ -85,10 +110,12 @@ configuration.  Here are the parameters that can be configured:
 
 ## How to use
 
-The plugin provides three commands:
+The plugin provides the following commands:
 
 - `/bounty` shows your bounty.
 - `/bounty <playername>` shows another player's bounty.
+- `/setbounty <playername> <bounty>` sets the player's bounty to the
+  specified amount.
 - `/emperors` shows the list of emperors.
 
 ## How to compile
