@@ -9,6 +9,8 @@ commandsErrorMessages:
     - "&cInvalid command: &l%player%&c is offline or doesn't exist!"
   insufficientArguments:
     - "&cInvalid command: not enough arguments!"
+  wrongSyntax:
+    - "&cInvalid command: wrong syntax!"
   wrongType:
     - "&cInvalid command: &l%value%&c is not a &l%type%&c!"
   noPermission:
@@ -34,3 +36,7 @@ setBountyCommand:
   messages:
     ok:
       - "Set &e%player%&r's bounty to &e&l$%bounty%"
+setEmperorsCommand:
+  messages:
+    ok:
+      - "Leaderboard updated successfully"

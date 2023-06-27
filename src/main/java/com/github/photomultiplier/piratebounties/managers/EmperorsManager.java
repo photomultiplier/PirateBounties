@@ -153,4 +153,44 @@ public abstract class EmperorsManager {
 	public static void updateSingle(Player player) {
 		updateSingle(new Emperor(player));
 	}
+
+	/**
+	 * Removes an emperor from the leaderboard.
+	 *
+	 * @param uuid The emperor's unique identifier.
+	 */
+	public static void remove(UUID uuid) {
+		boolean seen = false;
+
+		for (int i = 0; i < leaderBoard.l.length; i++) {
+			if (seen || (leaderBoard.l[i] != null && uuid.equals(leaderBoard.l[i].uuid))) {
+				if (i + 1 > emperorAmount) {
+					leaderBoard.l[i] = null;
+				} else {
+					leaderBoard.l[i] = leaderBoard.l[i + 1];
+				}
+				seen = true;
+			}
+
+			if (leaderBoard.l[i] == null) {
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Removes an emperor from the leaderboard.
+	 *
+	 * @param player The player to be removed.
+	 */
+	public static void remove(Player player) {
+		remove(player.getUniqueId());
+	}
+
+	/**
+	 * Empties the leaderboard.
+	 */
+	public static void clear() {
+		leaderBoard = new EmperorLeaderboard(emperorAmount);
+	}
 }

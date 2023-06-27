@@ -12,3 +12,6 @@ commands:
   emperors:
     description: See who the emperors are.
     usage: /<command>
+  setemperors:
+    description: Edit the emperors leaderboard.
+    usage: /<command> [update [<playername>] | remove <playername> | clear]
