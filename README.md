@@ -30,6 +30,10 @@ configuration.  Here are the parameters that can be configured:
     - `emperorAmount`, default 4.  How many emperors there will be.
     - `emperorThreshold`, default 1.  The minimum bounty required to
       be an emperor.
+- Category `files`: configures file names for saving persistent data.
+    - `emperorsFile`, default `"EmperorsLeaderboardData.bin.gz"`.  The
+      file used to save the emperors leaderboard between plugin
+      reloads.
 - Category `commandsErrorMessages`: error messages common to all the
   commands.  Each field is a list of strings: each item is printed on
   a different line.  Each field has some placeholders (for example
@@ -47,6 +51,12 @@ configuration.  Here are the parameters that can be configured:
       Error message printed when a command is called with an
       insufficient number of arguments.  Placeholders: `%given%`, the
       number of arguments given; `%needed%`, the minimum number of arguments.
+    - `wrongSyntax`, default:
+      ```yaml
+      - "&cInvalid command: wrong syntax!"
+      ```
+      Error message printed when a command is called with an
+      unexpected keyword.  No placeholders.
     - `wrongType`, default:
       ```yaml
       - "&cInvalid command: &l%value%&c is not a &l%type%&c!"
@@ -122,6 +132,17 @@ configuration.  Here are the parameters that can be configured:
           ```
           Response when there aren't any emperors.  Placeholders: `%threshold%`,
           the minimum bounty required to be an emperor.
+- Category `setEmperorsCommand`: configures the `/setemperors`
+  command.
+    - Category `messages`: configures the responses to the command.
+      Each field is a list of strings: each item is printed on a
+      different line.  Each field has some placeholders (for example
+      `%player%`) which will then be replaced by the command.
+        - `ok`, default:
+          ```yaml
+          - "Leaderboard updated successfully"
+          ```
+          Message printed on command success.  No placeholders.
 
 ## Permissions
 
@@ -133,6 +154,7 @@ The plugin uses the following permissions:
 - `pirateobounties.bounties.set` enables use of the `/setbounty`
   command.
 - `pirateobounties.emperors.get` enables use of the `/emperors` command.
+- `pirateobounties.emperors.set` enables use of the `/setemperors` command.
 
 ## How to use
 
@@ -143,6 +165,12 @@ The plugin provides the following commands:
 - `/setbounty <playername> <bounty>` sets the player's bounty to the
   specified amount.
 - `/emperors` shows the list of emperors.
+- `/setemperors update` updates the whole emperors leaderboard.
+- `/setemperors update <playername>` updates a single player on the
+  leaderboard.
+- `/setemperors remove <playername>` removes a player from the
+  leaderboard.
+- `/setemperors clear` empties the leaderboard.
 
 ## How to compile
 
