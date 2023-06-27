@@ -132,9 +132,14 @@ public abstract class EmperorsManager {
 				break;
 			} else {
 				if (newEmperor.bounty >= leaderBoard.l[i].bounty) {
-					Emperor buffer = leaderBoard.l[i];
-					leaderBoard.l[i] = newEmperor;
-					newEmperor = buffer;
+					if (seen) {
+						leaderBoard.l[i] = newEmperor;
+						break;
+					} else {
+						Emperor buffer = leaderBoard.l[i];
+						leaderBoard.l[i] = newEmperor;
+						newEmperor = buffer;
+					}
 				}
 			}
 		}
