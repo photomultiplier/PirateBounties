@@ -4,10 +4,12 @@
 
 package com.github.photomultiplier.piratebounties.managers;
 
+import java.io.File;
 import java.util.Collection;
 
 import com.github.photomultiplier.piratebounties.PirateBounties;
 import com.github.photomultiplier.piratebounties.utils.Emperor;
+import com.github.photomultiplier.piratebounties.utils.EmperorLeaderboard;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,13 +20,14 @@ import org.bukkit.scheduler.BukkitScheduler;
 /**
  * Manages the emperors leaderboard.
  *
- * The leaderboard is cached and recomputed every two hours.
+ * The leaderboard is cached and saved between plugin reloads.
  */
 public abstract class EmperorsManager {
 	static BukkitScheduler scheduler = Bukkit.getScheduler();
 	static int emperorThreshold = 1;
 	static int emperorAmount = 1;
-	static Emperor[] leaderBoard = new Emperor[4];
+	static File dataFile;
+	static EmperorLeaderboard leaderBoard = new EmperorLeaderboard(4);
 
 	/**
 	 * Returns the minimum bounty needed to become an emperor.
@@ -50,7 +53,7 @@ public abstract class EmperorsManager {
 	 * @return The leaderboard.
 	 */
 	public static Emperor[] getLeaderBoard() {
-		return leaderBoard;
+		return leaderBoard.l;
 	}
 
 	/**
@@ -62,14 +65,33 @@ public abstract class EmperorsManager {
 		emperorThreshold = config.getInt("general.emperorThreshold");
 		emperorAmount = config.getInt("general.emperorAmount");
 
-		scheduler.runTaskTimer(pg, () -> update(), 20L, 20L * 60L * 60L * 2L);
+		File dataFolder = pg.getDataFolder();
+		if (!dataFolder.exists()) {
+			dataFolder.mkdirs();
+		}
+
+		dataFile = new File(dataFolder, config.getString("files.emperorsFile"));
+
+		leaderBoard = EmperorLeaderboard.loadData(dataFile.getAbsolutePath());
+
+		if (leaderBoard == null) {
+			leaderBoard = new EmperorLeaderboard(emperorAmount);
+		}
+	}
+
+	/**
+	 * De-initializes the manager.
+	 */
+	public static void deInit() {
+		if (!leaderBoard.saveData(dataFile.getAbsolutePath())) {
+			System.out.println("ERROR: Couldn't save the emperors leaderboard!");
+		}
 	}
 
 	/**
 	 * Updates the whole leaderboard.
 	 */
 	public static void update() {
-		leaderBoard = new Emperor[emperorAmount];
 		@SuppressWarnings("unchecked")
 		Collection<Player> players = (Collection<Player>) Bukkit.getOnlinePlayers();
 
@@ -92,25 +114,25 @@ public abstract class EmperorsManager {
 		String originalName = newEmperor.displayName;
 		boolean seen = false;
 
-		for (int i = 0; i < leaderBoard.length; i++) {
-			if (seen || (leaderBoard[i] != null && originalName.equals(leaderBoard[i].displayName))) {
+		for (int i = 0; i < leaderBoard.l.length; i++) {
+			if (seen || (leaderBoard.l[i] != null && originalName.equals(leaderBoard.l[i].displayName))) {
 				if (i + 1 > emperorAmount) {
-					leaderBoard[i] = null;
+					leaderBoard.l[i] = null;
 				} else {
-					leaderBoard[i] = leaderBoard[i + 1];
+					leaderBoard.l[i] = leaderBoard.l[i + 1];
 				}
 				seen = true;
 			}
 
-			if (leaderBoard[i] == null) {
+			if (leaderBoard.l[i] == null) {
 				if (newEmperor.bounty >= emperorThreshold) {
-					leaderBoard[i] = newEmperor;
+					leaderBoard.l[i] = newEmperor;
 				}
 				break;
 			} else {
-				if (newEmperor.bounty >= leaderBoard[i].bounty) {
-					Emperor buffer = leaderBoard[i];
-					leaderBoard[i] = newEmperor;
+				if (newEmperor.bounty >= leaderBoard.l[i].bounty) {
+					Emperor buffer = leaderBoard.l[i];
+					leaderBoard.l[i] = newEmperor;
 					newEmperor = buffer;
 				}
 			}

@@ -62,6 +62,15 @@ public class PirateBounties extends JavaPlugin {
 	}
 
 	/**
+	 * Method called on plugin de-initialization.
+	 */
+	@Override
+	public void onDisable() {
+		// Managers
+		EmperorsManager.deInit();
+	}
+
+	/**
 	 * Return a pointer to the plugin instance.
 	 *
 	 * @return The instance.

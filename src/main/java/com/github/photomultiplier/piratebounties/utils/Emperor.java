@@ -6,12 +6,14 @@ package com.github.photomultiplier.piratebounties.utils;
 
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
 
+import java.io.Serializable;
+
 import org.bukkit.entity.Player;
 
 /**
  * An utility class to cache player information.
  */
-public class Emperor {
+public class Emperor implements Serializable {
 	/**
 	 * The player's display name.
 	 */
