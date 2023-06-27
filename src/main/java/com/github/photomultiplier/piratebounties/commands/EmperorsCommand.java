@@ -5,8 +5,8 @@
 package com.github.photomultiplier.piratebounties.commands;
 
 import com.github.photomultiplier.piratebounties.PirateBounties;
-import com.github.photomultiplier.piratebounties.managers.Emperor;
 import com.github.photomultiplier.piratebounties.managers.EmperorsManager;
+import com.github.photomultiplier.piratebounties.utils.Emperor;
 import com.github.photomultiplier.piratebounties.utils.ParamSubst;
 import com.github.photomultiplier.piratebounties.utils.TextUtils;
 

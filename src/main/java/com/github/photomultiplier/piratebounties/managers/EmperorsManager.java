@@ -7,6 +7,7 @@ package com.github.photomultiplier.piratebounties.managers;
 import java.util.Collection;
 
 import com.github.photomultiplier.piratebounties.PirateBounties;
+import com.github.photomultiplier.piratebounties.utils.Emperor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
