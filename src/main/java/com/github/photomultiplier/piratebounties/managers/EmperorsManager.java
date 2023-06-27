@@ -6,6 +6,7 @@ package com.github.photomultiplier.piratebounties.managers;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.UUID;
 
 import com.github.photomultiplier.piratebounties.PirateBounties;
 import com.github.photomultiplier.piratebounties.utils.Emperor;
@@ -111,11 +112,11 @@ public abstract class EmperorsManager {
 	 * @param newEmperor The emperor to be updated.
 	 */
 	public static void updateSingle(Emperor newEmperor) {
-		String originalName = newEmperor.displayName;
+		UUID originalUUID = newEmperor.uuid;
 		boolean seen = false;
 
 		for (int i = 0; i < leaderBoard.l.length; i++) {
-			if (seen || (leaderBoard.l[i] != null && originalName.equals(leaderBoard.l[i].displayName))) {
+			if (seen || (leaderBoard.l[i] != null && originalUUID.equals(leaderBoard.l[i].uuid))) {
 				if (i + 1 > emperorAmount) {
 					leaderBoard.l[i] = null;
 				} else {

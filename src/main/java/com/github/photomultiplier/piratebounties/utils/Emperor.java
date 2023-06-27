@@ -7,6 +7,7 @@ package com.github.photomultiplier.piratebounties.utils;
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
@@ -14,6 +15,10 @@ import org.bukkit.entity.Player;
  * An utility class to cache player information.
  */
 public class Emperor implements Serializable {
+	/**
+	 * The player's UUID.
+	 */
+	public UUID uuid;
 	/**
 	 * The player's display name.
 	 */
@@ -24,12 +29,14 @@ public class Emperor implements Serializable {
 	public int bounty;
 
 	/**
-	 * Constructs an Emperor from its name and bounty.
+	 * Constructs an Emperor from its identifier, name and bounty.
 	 *
+	 * @param newUUID The player's unique identifier.
 	 * @param newDisplayName The player's name.
 	 * @param newBounty The player's bounty.
 	 */
-	public Emperor(String newDisplayName, int newBounty) {
+	public Emperor(UUID newUUID, String newDisplayName, int newBounty) {
+		uuid = newUUID;
 		displayName = newDisplayName;
 		bounty = newBounty;
 	}
@@ -40,6 +47,7 @@ public class Emperor implements Serializable {
 	 * @param player The player of interest.
 	 */
 	public Emperor(Player player) {
+		uuid = player.getUniqueId();
 		displayName = player.getDisplayName();
 		bounty = BountyManager.getBounty(player);
 	}
