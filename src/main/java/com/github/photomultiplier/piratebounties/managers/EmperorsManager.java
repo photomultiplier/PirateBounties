@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitScheduler;
  *
  * The leaderboard is cached and recomputed every two hours.
  */
-public class EmperorsManager {
+public abstract class EmperorsManager {
 	static BukkitScheduler scheduler = Bukkit.getScheduler();
 	static int emperorThreshold = 1;
 	static int emperorAmount = 1;

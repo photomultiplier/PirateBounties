@@ -15,7 +15,7 @@ import org.bukkit.plugin.Plugin;
  *
  * It creates and maintains the "bounty" NBT tag.
  */
-public class BountyManager {
+public abstract class BountyManager {
 	static NamespacedKey key;
 	static int bountyIncreaseAmount = 1;
 
