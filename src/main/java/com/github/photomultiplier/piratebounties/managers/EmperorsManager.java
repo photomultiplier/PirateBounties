@@ -91,7 +91,7 @@ public abstract class EmperorsManager {
 		boolean seen = false;
 
 		for (int i = 0; i < leaderBoard.length; i++) {
-			if (seen || (leaderBoard[i] != null && originalName == leaderBoard[i].displayName)) {
+			if (seen || (leaderBoard[i] != null && originalName.equals(leaderBoard[i].displayName))) {
 				if (i + 1 > emperorAmount) {
 					leaderBoard[i] = null;
 				} else {
