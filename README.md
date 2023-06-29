@@ -30,6 +30,28 @@ configuration.  Here are the parameters that can be configured:
     - `emperorAmount`, default 4.  How many emperors there will be.
     - `emperorThreshold`, default 1.  The minimum bounty required to
       be an emperor.
+- Category `events`: configures actions on events.  Contains various
+  fields, one for each event.  Right now, the events are:
+  - `leaderboardEnter`, when a player enters the leaderboard.
+    Placeholders: `%player%`, the display name of the player;
+    `%bounty%`, the player's bounty.
+  - `leaderboardLeave`, when a player leaves the leaderboard.
+    Placeholders: `%player%`, the display name of the player;
+    `%bounty%`, the player's bounty.
+  Each field can have the same sub-fields to configure what happens
+  when the event is fired:
+  - `enabled`: if the event is enabled, defaults to `false`.
+  - `commands`: a list of strings.  Leave out this field if you don't
+    want any commands to be executed.  Each item is run as a different
+    command.  Don't include the leading `/`.  Placeholders are
+    supported and will be replaced.
+  - `playerMessage`: a list of strings.  Leave out this field if you
+    don't want any message to be sent.  This message is sent only to
+    the player.  Placeholders and formatting codes are supported.
+  - `broadcastMessage`: a list of strings.  Leave out this field if
+    you don't want any message to be sent.  This message is broadcast
+    to everyone on the server.  Placeholders and formatting codes are
+    supported.
 - Category `files`: configures file names for saving persistent data.
     - `emperorsFile`, default `"EmperorsLeaderboardData.bin.gz"`.  The
       file used to save the emperors leaderboard between plugin
