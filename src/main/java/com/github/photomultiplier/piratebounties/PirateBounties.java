@@ -40,7 +40,7 @@ public class PirateBounties extends JavaPlugin {
 		System.out.println("PirateBounties loading...");
 		saveDefaultConfig();
 
-		// Config utils
+		// Managers
 		BountyManager.init(this);
 		EmperorsManager.init(this);
 
