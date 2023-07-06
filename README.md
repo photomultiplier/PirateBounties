@@ -37,7 +37,7 @@ configuration.  Here are the parameters that can be configured:
     `%bounty%`, the player's bounty.
   - `leaderboardLeave`, when a player leaves the leaderboard.
     Placeholders: `%player%`, the display name of the player;
-    `%bounty%`, the player's bounty.
+    `%bounty%`, the player's bounty.  
   Each field can have the same sub-fields to configure what happens
   when the event is fired:
   - `enabled`: if the event is enabled, defaults to `false`.
