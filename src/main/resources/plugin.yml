@@ -2,6 +2,9 @@ name: PirateBounties
 version: "1.5.2"
 main: com.github.photomultiplier.piratebounties.PirateBounties
 api-version: "1.14"
+depend:
+  - PlaceholderAPI
+  - Vault
 commands:
   bounty:
     description: Fetch your or another player's bounty.

@@ -19,8 +19,12 @@ repositories {
     mavenCentral()
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/sonatype-nexus-snapshots/' }
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.11.3'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
 }
