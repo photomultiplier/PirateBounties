@@ -30,7 +30,7 @@ public class ParamSubst {
 	 * @param value The new value to be inserted.
 	 */
 	public ParamSubst(String placeholder, Object value) {
-		placeholder = placeholder;
-		value = value.toString();
+		this.placeholder = placeholder;
+		this.value = value.toString();
 	}
 }
