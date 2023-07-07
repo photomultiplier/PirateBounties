@@ -26,6 +26,7 @@ import com.github.photomultiplier.piratebounties.listeners.KillListener;
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
 import com.github.photomultiplier.piratebounties.managers.EmperorsManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -43,7 +44,7 @@ public class PirateBounties extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 
-		System.out.println("PirateBounties loading...");
+		Bukkit.getLogger().info("PirateBounties loading...");
 		saveDefaultConfig();
 
 		// Managers
@@ -60,7 +61,7 @@ public class PirateBounties extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new KillListener(), this);
 		getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
-		System.out.println("PirateBounties loaded.");
+		Bukkit.getLogger().info("PirateBounties loaded.");
 	}
 
 	/**

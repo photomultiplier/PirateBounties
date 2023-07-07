@@ -100,7 +100,7 @@ public class SetEmperorsCommand implements CommandExecutor {
 		if (p != null) {
 			p.sendMessage(message);
 		} else {
-			System.out.println(ChatColor.stripColor(message));
+			Bukkit.getLogger().info(ChatColor.stripColor(message));
 		}
 		return true;
 	}

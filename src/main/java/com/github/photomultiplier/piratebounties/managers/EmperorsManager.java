@@ -91,7 +91,7 @@ public abstract class EmperorsManager {
 	 */
 	public static void deInit() {
 		if (!leaderBoard.saveData(dataFile.getAbsolutePath())) {
-			System.out.println("ERROR: Couldn't save the emperors leaderboard!");
+			Bukkit.getLogger().severe("Couldn't save the emperors leaderboard!");
 		}
 	}
 

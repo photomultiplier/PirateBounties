@@ -10,6 +10,7 @@ import com.github.photomultiplier.piratebounties.utils.Emperor;
 import com.github.photomultiplier.piratebounties.utils.ParamSubst;
 import com.github.photomultiplier.piratebounties.utils.TextUtils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -70,7 +71,7 @@ public class EmperorsCommand implements CommandExecutor {
 			if (p != null) {
 				p.sendMessage(message);
 			} else {
-				System.out.println(ChatColor.stripColor(message));
+				Bukkit.getLogger().info(ChatColor.stripColor(message));
 			}
 		} else {
 			message = listHeaderMessage;
@@ -78,7 +79,7 @@ public class EmperorsCommand implements CommandExecutor {
 			if (p != null) {
 				p.sendMessage(listHeaderMessage);
 			} else {
-				System.out.println(ChatColor.stripColor(message));
+				Bukkit.getLogger().info(ChatColor.stripColor(message));
 			}
 
 			for (int i = 0; i < leaderBoard.length; i++) {
@@ -95,7 +96,7 @@ public class EmperorsCommand implements CommandExecutor {
 					if (p != null) {
 						p.sendMessage(message);
 					} else {
-						System.out.println(ChatColor.stripColor(message));
+						Bukkit.getLogger().info(ChatColor.stripColor(message));
 					}
 				}
 			}
