@@ -6,11 +6,14 @@ package com.github.photomultiplier.piratebounties.managers;
 
 import com.github.photomultiplier.piratebounties.PirateBounties;
 
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+
+import net.milkbowl.vault.economy.EconomyResponse;
 
 /**
  * Manages player bounties.
@@ -79,7 +82,12 @@ public abstract class BountyManager {
 	 * @param killer The player who killed.
 	 */
 	public static void registerKill(Player killed, Player killer) {
-		setBounty(killed, getBounty(killed) / 2);
+		long killedBounty = getBounty(killed);
+		setBounty(killed, killedBounty / 2);
 		setBounty(killer, getBounty(killer) + bountyIncreaseAmount);
+		EconomyResponse r = PirateBounties.getEconomy().depositPlayer(killer, killedBounty - (killedBounty / 2));
+		if(!r.transactionSuccess()) {
+			Bukkit.getLogger().warning("A transaction has gone wrong!");
+		}
 	}
 }

@@ -28,7 +28,10 @@ import com.github.photomultiplier.piratebounties.managers.BountyManager;
 import com.github.photomultiplier.piratebounties.managers.EmperorsManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import net.milkbowl.vault.economy.Economy;
 
 /**
  * The main class of the plugin.
@@ -37,6 +40,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class PirateBounties extends JavaPlugin {
 	private static JavaPlugin plugin;
+	private static Economy econ;
 
 	/**
 	 * Method called on plugin initialization.
@@ -67,6 +71,13 @@ public class PirateBounties extends JavaPlugin {
 			new PirateBountiesExpansion().register();
 		}
 
+		// Vault: economy
+		if (!setupEconomy()) {
+			Bukkit.getLogger().severe("Vault hasn't an economy provider! Have you installed an economy plugin?");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+
 		Bukkit.getLogger().info("PirateBounties loaded.");
 	}
 
@@ -80,11 +91,37 @@ public class PirateBounties extends JavaPlugin {
 	}
 
 	/**
+	 * Configure the Vault economy API.
+	 *
+	 * @return true on success.
+	 */
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		econ = rsp.getProvider();
+		return econ != null;
+	}
+
+	/**
 	 * Return a pointer to the plugin instance.
 	 *
 	 * @return The instance.
 	 */
 	public static JavaPlugin getPlugin() {
 		return plugin;
+	}
+
+	/**
+	 * Return the economy API.
+	 *
+	 * @return The economy API.
+	 */
+	public static Economy getEconomy() {
+		return econ;
 	}
 }
