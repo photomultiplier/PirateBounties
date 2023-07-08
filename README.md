@@ -16,6 +16,35 @@ of a fixed, configurable amount and B's bounty will halve.
 The players with the highest bounties above a certain threshold become
 emperors.  There's also a maximum number of emperors.
 
+## A note on placeholders
+
+This plugin supports
+[PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
+placeholders and even supplies some of its own trough an integrated
+expansion (e.g. the expansion is included in the plugin and will be
+registered automagically).  This said, the plugin also replaces some
+"special placeholders": these have priority over PlaceholderAPI's and
+are needed in some special situations, e.g. for the response message
+printed when a player isn't found, as `%player_name%` wouldn't work as
+the player... doesn't exist (because PlaceholderAPI's placeholders are
+always replaced relative to a player). All "special placeholders" are
+clearly pointed out in the configuration guide further down.  That
+said, if not specified otherwise, "placeholder" refers to
+PlaceholderAPI's.
+
+Here are the placeholders provided by this plugin's PlaceholderAPI
+expansion:
+
+- `%piratebounties_bounty%`: the bounty of the player.
+- `%piratebounties_emperors_thr%`: the minimum bounty necessary to
+  become an emperor.  Doesn't depend on the player.
+- `%piratebounties_emperors_amount`: the amount of emperors.  Doesn't
+  depend on the player.
+
+As for other expansions, the default configuration of the plugin
+assumes that the Player expansion is installed.  You can install it by
+running the `/papi ecloud download Player` command.
+
 ## How to configure
 
 After running the plugin for the first time, Spigot will create a
