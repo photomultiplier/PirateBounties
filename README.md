@@ -16,6 +16,14 @@ A Spigot plugin adding bounties to minecraft.
 Download the `.jar` file from the "Releases" section and copy it in
 the `plugins` directory of your Spigot installation.
 
+This plugin also has two dependencies:
+
+- [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/),
+  for placeholders.
+- [Vault](https://www.spigotmc.org/resources/vault.34315/), to
+  interact with the economy (so be sure to also install an economy
+  plugin like EssentialsX or iConomy).
+
 ## How it works
 
 The plugin introduces a bounty mechanic.  Each player starts with a
