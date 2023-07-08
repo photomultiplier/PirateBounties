@@ -34,7 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Initializes managers and registers commands and listeners.
  */
 public class PirateBounties extends JavaPlugin {
-	static JavaPlugin plugin;
+	private static JavaPlugin plugin;
 
 	/**
 	 * Method called on plugin initialization.
