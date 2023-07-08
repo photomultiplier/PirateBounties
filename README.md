@@ -20,7 +20,10 @@ the `plugins` directory of your Spigot installation.
 
 The plugin introduces a bounty mechanic.  Each player starts with a
 bounty of 0.  When player A kills player B, A's bounty will increase
-of a fixed, configurable amount and B's bounty will halve.
+of a fixed, configurable amount and B's bounty will halve.  The amount
+subtracted from B's bounty is added to A's
+[Vault](https://www.spigotmc.org/resources/vault.34315/) economy
+balance.
 
 The players with the highest bounties above a certain threshold become
 emperors.  There's also a maximum number of emperors.
