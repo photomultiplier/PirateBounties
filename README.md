@@ -1,5 +1,14 @@
 # PirateBounties
 
+<p align="center">
+<img alt="PirateBounties Logo" src="images/piratebounties-logo.svg" />
+</p>
+
+<p align="center">
+<img alt="GitHub tag" src="https://img.shields.io/github/v/tag/photomultiplier/piratebounties" />
+<img alt="GitHub license" src="https://img.shields.io/github/license/photomultiplier/piratebounties">
+</p>
+
 A Spigot plugin adding bounties to minecraft.
 
 ## How to install
