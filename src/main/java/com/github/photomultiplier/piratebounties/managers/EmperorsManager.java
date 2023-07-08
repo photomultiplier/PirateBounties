@@ -27,7 +27,7 @@ import org.bukkit.scheduler.BukkitScheduler;
  */
 public abstract class EmperorsManager {
 	static BukkitScheduler scheduler = Bukkit.getScheduler();
-	static int emperorThreshold = 1;
+	static long emperorThreshold = 1l;
 	static int emperorAmount = 1;
 	static File dataFile;
 	static EmperorLeaderboard leaderBoard = new EmperorLeaderboard(4);
@@ -39,7 +39,7 @@ public abstract class EmperorsManager {
 	 *
 	 * @return The minimum bounty.
 	 */
-	public static int getEmperorThreshold() {
+	public static long getEmperorThreshold() {
 		return emperorThreshold;
 	}
 
@@ -67,7 +67,7 @@ public abstract class EmperorsManager {
 	public static void init() {
 		Plugin pg = PirateBounties.getPlugin();
 		FileConfiguration config = pg.getConfig();
-		emperorThreshold = config.getInt("general.emperorThreshold");
+		emperorThreshold = config.getLong("general.emperorThreshold");
 		emperorAmount = config.getInt("general.emperorAmount");
 		leaderboardEnter = new ActionsGroup(config, "leaderboardEnter");
 		leaderboardLeave = new ActionsGroup(config, "leaderboardLeave");

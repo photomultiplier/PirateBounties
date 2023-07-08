@@ -26,7 +26,7 @@ public class Emperor implements Serializable {
 	/**
 	 * The player's bounty.
 	 */
-	public int bounty;
+	public long bounty;
 
 	/**
 	 * Constructs an Emperor from its identifier, name and bounty.

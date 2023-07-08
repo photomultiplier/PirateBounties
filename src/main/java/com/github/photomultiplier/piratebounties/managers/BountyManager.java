@@ -19,7 +19,7 @@ import org.bukkit.plugin.Plugin;
  */
 public abstract class BountyManager {
 	static NamespacedKey key;
-	static int bountyIncreaseAmount = 1;
+	static long bountyIncreaseAmount = 1l;
 
 	/**
 	 * Initializes the manager.
@@ -27,7 +27,7 @@ public abstract class BountyManager {
 	public static void init() {
 		Plugin pg = PirateBounties.getPlugin();
 		key = new NamespacedKey(pg, "bounty");
-		bountyIncreaseAmount = pg.getConfig().getInt("general.bountyIncrease");
+		bountyIncreaseAmount = pg.getConfig().getLong("general.bountyIncrease");
 	}
 
 	/**
@@ -36,20 +36,20 @@ public abstract class BountyManager {
 	 * @param p The player of interest.
 	 * @return The player's bounty.
 	 */
-	public static int getBounty(Player p) {
+	public static long getBounty(Player p) {
 		if (key == null) {
-			return 0;
+			return 0l;
 		} else {
 			if (!p.hasPermission("piratebounties.bounties.enabled")) {
-				return 0;
+				return 0l;
 			}
 
 			PersistentDataContainer pdc = p.getPersistentDataContainer();
-			if (pdc.has(key, PersistentDataType.INTEGER)) {
-				return pdc.get(key, PersistentDataType.INTEGER);
+			if (pdc.has(key, PersistentDataType.LONG)) {
+				return pdc.get(key, PersistentDataType.LONG);
 			} else {
-				pdc.set(key, PersistentDataType.INTEGER, 0);
-				return 0;
+				pdc.set(key, PersistentDataType.LONG, 0l);
+				return 0l;
 			}
 		}
 	}
@@ -60,14 +60,14 @@ public abstract class BountyManager {
 	 * @param p The player of interest.
 	 * @param newBounty The new bounty to set.
 	 */
-	public static void setBounty(Player p, int newBounty) {
+	public static void setBounty(Player p, long newBounty) {
 		if (key != null) {
 			if (!p.hasPermission("piratebounties.bounties.enabled")) {
 				return;
 			}
 
 			PersistentDataContainer pdc = p.getPersistentDataContainer();
-			pdc.set(key, PersistentDataType.INTEGER, newBounty);
+			pdc.set(key, PersistentDataType.LONG, newBounty);
 			EmperorsManager.updateSingle(p);
 		}
 	}

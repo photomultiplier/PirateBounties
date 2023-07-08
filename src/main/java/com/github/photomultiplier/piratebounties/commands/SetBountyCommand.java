@@ -78,7 +78,7 @@ public class SetBountyCommand implements CommandExecutor {
 			} else {
 				if (t.hasPermission("piratebounties.bounties.enabled")) {
 					try {
-						int newBounty = Integer.parseInt(args[1]);
+						long newBounty = Long.parseLong(args[1]);
 						BountyManager.setBounty(t, newBounty);
 						message = TextUtils.replace(okMessage,
 						                            new ParamSubst("player", t.getDisplayName()),
