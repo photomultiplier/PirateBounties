@@ -4,10 +4,16 @@
 
 package com.github.photomultiplier.piratebounties.managers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.photomultiplier.piratebounties.PirateBounties;
+import com.github.photomultiplier.piratebounties.utils.ActionsGroup;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -23,14 +29,25 @@ import net.milkbowl.vault.economy.EconomyResponse;
 public abstract class BountyManager {
 	static NamespacedKey key;
 	static long bountyIncreaseAmount = 1l;
+	static List<ActionsGroup> rewards;
+	static List<Long> rewardLevels;
 
 	/**
 	 * Initializes the manager.
 	 */
 	public static void init() {
 		Plugin pg = PirateBounties.getPlugin();
+		FileConfiguration conf = pg.getConfig();
+
 		key = new NamespacedKey(pg, "bounty");
-		bountyIncreaseAmount = pg.getConfig().getLong("general.bountyIncrease");
+		bountyIncreaseAmount = conf.getLong("general.bountyIncrease");
+		rewardLevels = conf.getLongList("general.rewards");
+
+		rewards = new ArrayList<ActionsGroup>();
+
+		for (long i : rewardLevels) {
+			rewards.add(new ActionsGroup(conf, String.format("%dReward", i)));
+		}
 	}
 
 	/**
@@ -70,7 +87,15 @@ public abstract class BountyManager {
 			}
 
 			PersistentDataContainer pdc = p.getPersistentDataContainer();
+			long oldBounty = pdc.get(key, PersistentDataType.LONG);
 			pdc.set(key, PersistentDataType.LONG, newBounty);
+
+			for (int i = 0; i < rewardLevels.size(); i++) {
+				if (oldBounty < rewardLevels.get(i) && newBounty > rewardLevels.get(i)) {
+					rewards.get(i).execute(p, (OfflinePlayer) p);
+				}
+			}
+
 			EmperorsManager.updateSingle(p);
 		}
 	}
