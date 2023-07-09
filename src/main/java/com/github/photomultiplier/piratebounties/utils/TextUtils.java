@@ -22,8 +22,12 @@ public abstract class TextUtils {
 	 * @see <a href="https://minecraft.fandom.com/wiki/Formatting_codes">formatting codes</a>
 	 */
 	public static String msgFromConfig(List<String> message) {
-		String joinedMessage = ChatColor.translateAlternateColorCodes('&', String.join("\n", message));
-		return joinedMessage;
+		if (message == null || message.size() == 0) {
+			return null;
+		} else {
+			String joinedMessage = ChatColor.translateAlternateColorCodes('&', String.join("\n", message));
+			return joinedMessage;
+		}
 	}
 
 	/**

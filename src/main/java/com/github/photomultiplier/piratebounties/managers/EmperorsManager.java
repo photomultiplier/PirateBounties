@@ -12,7 +12,6 @@ import com.github.photomultiplier.piratebounties.PirateBounties;
 import com.github.photomultiplier.piratebounties.utils.ActionsGroup;
 import com.github.photomultiplier.piratebounties.utils.Emperor;
 import com.github.photomultiplier.piratebounties.utils.EmperorLeaderboard;
-import com.github.photomultiplier.piratebounties.utils.ParamSubst;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -168,9 +167,7 @@ public abstract class EmperorsManager {
 			// Cases 3 and 4
 			if (newEmperor != null) {
 				// Case 3
-				leaderboardLeave.execute(Bukkit.getPlayer(og.uuid),
-				                         new ParamSubst("player", og.displayName),
-				                         new ParamSubst("bounty", og.bounty));
+				leaderboardLeave.execute(og.getUpdatePlayer());
 			} // else case 4, nothing to do
 		} else {
 			// Surely it hasn't been removed
@@ -178,19 +175,13 @@ public abstract class EmperorsManager {
 			if (newEmperor == null) {
 				// Surely it was added and surely everyone fit
 				// Case 2
-				leaderboardEnter.execute(Bukkit.getPlayer(og.uuid),
-				                         new ParamSubst("player", og.displayName),
-				                         new ParamSubst("bounty", og.bounty));
+				leaderboardEnter.execute(og.getUpdatePlayer());
 			} else {
 				// Cases 1 and 4
 				if (!newEmperor.uuid.equals(og.uuid)) {
 					// Case 1
-					leaderboardEnter.execute(Bukkit.getPlayer(og.uuid),
-					                         new ParamSubst("player", og.displayName),
-					                         new ParamSubst("bounty", og.bounty));
-					leaderboardLeave.execute(Bukkit.getPlayer(newEmperor.uuid),
-					                         new ParamSubst("player", newEmperor.displayName),
-					                         new ParamSubst("bounty", newEmperor.bounty));
+					leaderboardEnter.execute(og.getUpdatePlayer());
+					leaderboardLeave.execute(newEmperor.getUpdatePlayer());
 				} // else case 4, nothing to do
 			}
 		}

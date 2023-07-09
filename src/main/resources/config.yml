@@ -32,6 +32,8 @@ emperorsCommand:
     listHeader:
       - "The emperors are:"
     listLine:
+      - "%index%. &e%player_name%&r, &e&l$%piratebounties_bounty%"
+    offlineListLine:
       - "%index%. &e%player%&r, &e&l$%bounty%"
     noEmperors:
       - "&eThere are no emperors!"

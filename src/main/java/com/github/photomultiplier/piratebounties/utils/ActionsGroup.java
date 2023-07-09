@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 /**
  * Represents a group of actions: commands and messages.
  */
@@ -49,23 +51,20 @@ public class ActionsGroup {
 	/**
 	 * Execute the commands as the console and broadcast messages to whoever necessary.
 	 *
-	 * Note that the substitutions are applied to commands and messages alike.
-	 *
 	 * @param player The player to send messages to.  Can be null.
-	 * @param substitutions The list of substitutions.
 	 */
-	public void execute(Player player, ParamSubst... substitutions) {
+	public void execute(Player player) {
 		if (enabled) {
 			if (commands.size() != 0) {
 				for (String command : commands) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), TextUtils.replace(command, substitutions));
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
 				}
 			}
 			if (broadcastMessage != null) {
-				Bukkit.getServer().broadcastMessage(TextUtils.replace(broadcastMessage, substitutions));
+				Bukkit.getServer().broadcastMessage(PlaceholderAPI.setPlaceholders(player, broadcastMessage));
 			}
 			if (playerMessage != null && player != null) {
-				player.sendMessage(TextUtils.replace(playerMessage, substitutions));
+				player.sendMessage(PlaceholderAPI.setPlaceholders(player, playerMessage));
 			}
 		}
 	}

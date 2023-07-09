@@ -26,6 +26,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 public class EmperorsCommand implements CommandExecutor {
 	String listHeaderMessage;
 	String listLineMessage;
+	String offlineListLineMessage;
 	String noEmperorsMessage;
 	String noPermissionMessage;
 
@@ -38,6 +39,7 @@ public class EmperorsCommand implements CommandExecutor {
 		FileConfiguration config = PirateBounties.getPlugin().getConfig();
 		listHeaderMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.listHeader"));
 		listLineMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.listLine"));
+		offlineListLineMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.offlineListLine"));
 		noEmperorsMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.noEmperors"));
 		noPermissionMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPermission"));
 
@@ -92,11 +94,18 @@ public class EmperorsCommand implements CommandExecutor {
 				if (emperor == null) {
 					break;
 				} else {
-					// Changing this now would break everything.
-					message = TextUtils.replace(listLineMessage,
-					                            new ParamSubst("index", (i + 1)),
-					                            new ParamSubst("player", emperor.displayName),
-					                            new ParamSubst("bounty", emperor.bounty));
+					Player t = emperor.getUpdatePlayer();
+					if (t == null) {
+						message = PlaceholderAPI.setPlaceholders(p,
+						                                         TextUtils.replace(offlineListLineMessage,
+						                                                           new ParamSubst("index", (i + 1)),
+						                                                           new ParamSubst("player", emperor.displayName),
+						                                                           new ParamSubst("bounty", emperor.bounty)));
+					} else {
+						message = PlaceholderAPI.setPlaceholders(t,
+						                                         TextUtils.replace(listLineMessage,
+						                                                           new ParamSubst("index", (i + 1))));
+					}
 
 					if (p != null) {
 						p.sendMessage(message);
