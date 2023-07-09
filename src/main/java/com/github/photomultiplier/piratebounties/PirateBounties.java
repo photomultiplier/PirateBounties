@@ -21,6 +21,7 @@ import com.github.photomultiplier.piratebounties.commands.BountyCommand;
 import com.github.photomultiplier.piratebounties.commands.EmperorsCommand;
 import com.github.photomultiplier.piratebounties.commands.SetBountyCommand;
 import com.github.photomultiplier.piratebounties.commands.SetEmperorsCommand;
+import com.github.photomultiplier.piratebounties.expansions.PirateBountiesExpansion;
 import com.github.photomultiplier.piratebounties.listeners.JoinListener;
 import com.github.photomultiplier.piratebounties.listeners.KillListener;
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
@@ -60,6 +61,11 @@ public class PirateBounties extends JavaPlugin {
 		// Listeners
 		getServer().getPluginManager().registerEvents(new KillListener(), this);
 		getServer().getPluginManager().registerEvents(new JoinListener(), this);
+
+		// PlaceholderAPI extension
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+			new PirateBountiesExpansion().register();
+		}
 
 		Bukkit.getLogger().info("PirateBounties loaded.");
 	}

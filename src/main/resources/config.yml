@@ -16,13 +16,17 @@ commandsErrorMessages:
   noPermission:
     - "&cYou aren't permitted to run this command!"
   bountyDisabled:
-    - "&cPlayer &l%player%&c doesn't have a bounty!"
+    - "&cPlayer &l%player_name%&c doesn't have a bounty!"
 bountyCommand:
   messages:
     self:
-      - "You have a bounty of &e&l$%bounty%"
+      - "You have a bounty of &e&l$%piratebounties_bounty%"
     other:
-      - "&e%player%&r has a bounty of &e&l$%bounty%"
+      - "&e%player_name%&r has a bounty of &e&l$%piratebounties_bounty%"
+setBountyCommand:
+  messages:
+    ok:
+      - "Set &e%player_name%&r's bounty to &e&l$%piratebounties_bounty%"
 emperorsCommand:
   messages:
     listHeader:
@@ -31,11 +35,7 @@ emperorsCommand:
       - "%index%. &e%player%&r, &e&l$%bounty%"
     noEmperors:
       - "&eThere are no emperors!"
-      - "&rEarn at least &e&l$%threshold%&r to become one!"
-setBountyCommand:
-  messages:
-    ok:
-      - "Set &e%player%&r's bounty to &e&l$%bounty%"
+      - "&rEarn at least &e&l$%piratebounties_emperors_thr%&r to become one!"
 setEmperorsCommand:
   messages:
     ok:

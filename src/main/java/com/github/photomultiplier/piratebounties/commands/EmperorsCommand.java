@@ -18,6 +18,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 /**
  * A command to retrieve the list of emperors.
  */
@@ -26,6 +28,8 @@ public class EmperorsCommand implements CommandExecutor {
 	String listLineMessage;
 	String noEmperorsMessage;
 	String noPermissionMessage;
+
+	final static String permission = "piratebounties.emperors.get";
 
 	/**
 	 * Initializes the command, loading responses from the config file.
@@ -36,6 +40,9 @@ public class EmperorsCommand implements CommandExecutor {
 		listLineMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.listLine"));
 		noEmperorsMessage = TextUtils.msgFromConfig(config.getStringList("emperorsCommand.messages.noEmperors"));
 		noPermissionMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPermission"));
+
+		noPermissionMessage = TextUtils.replace(noPermissionMessage,
+		                                        new ParamSubst("permission", permission));
 	}
 
 	/**
@@ -53,10 +60,8 @@ public class EmperorsCommand implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			p = (Player) sender;
-			if (!p.hasPermission("piratebounties.emperors.get")) {
-				p.sendMessage(TextUtils.replace(noPermissionMessage,
-				                                new ParamSubst("player", p.getDisplayName()),
-				                                new ParamSubst("permission", "piratebounties.emperors.get")));
+			if (!p.hasPermission(permission)) {
+				p.sendMessage(PlaceholderAPI.setPlaceholders(p, noPermissionMessage));
 				return true;
 			}
 		}
@@ -65,8 +70,7 @@ public class EmperorsCommand implements CommandExecutor {
 		String message;
 
 		if (leaderBoard[0] == null) {
-			message = TextUtils.replace(noEmperorsMessage,
-			                            new ParamSubst("threshold", EmperorsManager.getEmperorThreshold()));
+			message = PlaceholderAPI.setPlaceholders(p, noEmperorsMessage);
 
 			if (p != null) {
 				p.sendMessage(message);
@@ -74,10 +78,10 @@ public class EmperorsCommand implements CommandExecutor {
 				Bukkit.getLogger().info(ChatColor.stripColor(message));
 			}
 		} else {
-			message = listHeaderMessage;
+			message = PlaceholderAPI.setPlaceholders(p, listHeaderMessage);
 
 			if (p != null) {
-				p.sendMessage(listHeaderMessage);
+				p.sendMessage(message);
 			} else {
 				Bukkit.getLogger().info(ChatColor.stripColor(message));
 			}
@@ -88,6 +92,7 @@ public class EmperorsCommand implements CommandExecutor {
 				if (emperor == null) {
 					break;
 				} else {
+					// Changing this now would break everything.
 					message = TextUtils.replace(listLineMessage,
 					                            new ParamSubst("index", (i + 1)),
 					                            new ParamSubst("player", emperor.displayName),

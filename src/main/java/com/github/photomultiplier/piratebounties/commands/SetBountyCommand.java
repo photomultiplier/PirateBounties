@@ -17,6 +17,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 /**
  * A command to set a player's bounty.
  */
@@ -27,6 +29,8 @@ public class SetBountyCommand implements CommandExecutor {
 	String noPlayerMessage;
 	String noPermissionMessage;
 	String bountyDisabledMessage;
+
+	final static String permission = "piratebounties.bounties.set";
 
 	/**
 	 * Initializes the command, loading responses from the config file.
@@ -39,6 +43,9 @@ public class SetBountyCommand implements CommandExecutor {
 		noPlayerMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
 		noPermissionMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPermission"));
 		bountyDisabledMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.bountyDisabled"));
+
+		noPermissionMessage = TextUtils.replace(noPermissionMessage,
+		                                        new ParamSubst("permission", permission));
 	}
 
 	/**
@@ -57,40 +64,38 @@ public class SetBountyCommand implements CommandExecutor {
 		if (sender instanceof Player) {
 			p = (Player) sender;
 			if (!p.hasPermission("piratebounties.bounties.set")) {
-				p.sendMessage(TextUtils.replace(noPermissionMessage,
-				                                new ParamSubst("player", p.getDisplayName()),
-				                                new ParamSubst("permission", "piratebounties.bounties.set")));
+				p.sendMessage(PlaceholderAPI.setPlaceholders(p, noPermissionMessage));
 				return true;
 			}
 		}
 		String message;
 
 		if (args.length < 2) {
-			message = TextUtils.replace(insufficientArgumentsMessage,
-			                            new ParamSubst("given", args.length),
-			                            new ParamSubst("needed", 2));
+			message = PlaceholderAPI.setPlaceholders(p,
+			                                         TextUtils.replace(insufficientArgumentsMessage,
+			                                                           new ParamSubst("given", args.length),
+			                                                           new ParamSubst("needed", 2)));
 		} else {
 			Player t = Bukkit.getPlayer(args[0]);
 
 			if (t == null) {
-				message = TextUtils.replace(noPlayerMessage,
-				                            new ParamSubst("player", args[0]));
+				message = PlaceholderAPI.setPlaceholders(p,
+				                                         TextUtils.replace(noPlayerMessage,
+				                                                           new ParamSubst("player", args[0])));
 			} else {
 				if (t.hasPermission("piratebounties.bounties.enabled")) {
 					try {
 						long newBounty = Long.parseLong(args[1]);
 						BountyManager.setBounty(t, newBounty);
-						message = TextUtils.replace(okMessage,
-						                            new ParamSubst("player", t.getDisplayName()),
-						                            new ParamSubst("bounty", newBounty));
+						message = PlaceholderAPI.setPlaceholders(t, okMessage);
 					} catch (NumberFormatException e) {
-						message = TextUtils.replace(wrongTypeMessage,
-						                            new ParamSubst("value", args[1]),
-						                            new ParamSubst("type", "number"));
+						message = PlaceholderAPI.setPlaceholders(p,
+						                                         TextUtils.replace(wrongTypeMessage,
+						                                                           new ParamSubst("value", args[1]),
+						                                                           new ParamSubst("type", "number")));
 					}
 				} else {
-					message = TextUtils.replace(bountyDisabledMessage,
-					                            new ParamSubst("player", p.getDisplayName()));
+					message = PlaceholderAPI.setPlaceholders(t, bountyDisabledMessage);
 				}
 			}
 		}

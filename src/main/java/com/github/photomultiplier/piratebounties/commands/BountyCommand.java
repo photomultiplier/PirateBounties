@@ -5,7 +5,6 @@
 package com.github.photomultiplier.piratebounties.commands;
 
 import com.github.photomultiplier.piratebounties.PirateBounties;
-import com.github.photomultiplier.piratebounties.managers.BountyManager;
 import com.github.photomultiplier.piratebounties.utils.ParamSubst;
 import com.github.photomultiplier.piratebounties.utils.TextUtils;
 
@@ -17,6 +16,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 /**
  * A command to retrieve a player's bounty ingame.
  */
@@ -26,6 +27,8 @@ public class BountyCommand implements CommandExecutor {
 	String noPlayerMessage;
 	String noPermissionMessage;
 	String bountyDisabledMessage;
+
+	final static String permission = "piratebounties.bounties.get";
 
 	/**
 	 * Initializes the command, loading responses from the config file.
@@ -37,6 +40,9 @@ public class BountyCommand implements CommandExecutor {
 		noPlayerMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
 		noPermissionMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPermission"));
 		bountyDisabledMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.bountyDisabled"));
+
+		noPermissionMessage = TextUtils.replace(noPermissionMessage,
+		                                        new ParamSubst("permission", permission));
 	}
 
 	/**
@@ -54,10 +60,8 @@ public class BountyCommand implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			p = (Player) sender;
-			if (!p.hasPermission("piratebounties.bounties.get")) {
-				p.sendMessage(TextUtils.replace(noPermissionMessage,
-				                                new ParamSubst("player", p.getDisplayName()),
-				                                new ParamSubst("permission", "piratebounties.bounties.get")));
+			if (!p.hasPermission(permission)) {
+				p.sendMessage(PlaceholderAPI.setPlaceholders(p, noPermissionMessage));
 				return true;
 			}
 		}
@@ -67,12 +71,9 @@ public class BountyCommand implements CommandExecutor {
 		if (args.length == 0) {
 			if (p != null) {
 				if (p.hasPermission("piratebounties.bounties.enabled")) {
-					message = TextUtils.replace(selfMessage,
-					                            new ParamSubst("player", p.getDisplayName()),
-					                            new ParamSubst("bounty", BountyManager.getBounty(p)));
+					message = PlaceholderAPI.setPlaceholders(p, selfMessage);
 				} else {
-					message = TextUtils.replace(bountyDisabledMessage,
-					                            new ParamSubst("player", p.getDisplayName()));
+					message = PlaceholderAPI.setPlaceholders(p, bountyDisabledMessage);
 				}
 
 				p.sendMessage(message);
@@ -81,16 +82,14 @@ public class BountyCommand implements CommandExecutor {
 			Player t = Bukkit.getPlayer(args[0]);
 
 			if (t == null) {
-				message = TextUtils.replace(noPlayerMessage,
-				                            new ParamSubst("player", args[0]));
+				message = PlaceholderAPI.setPlaceholders(p,
+				                                         TextUtils.replace(noPlayerMessage,
+				                                                           new ParamSubst("player", args[0])));
 			} else {
 				if (t.hasPermission("piratebounties.bounties.enabled")) {
-					message = TextUtils.replace(otherMessage,
-					                            new ParamSubst("player", t.getDisplayName()),
-					                            new ParamSubst("bounty", BountyManager.getBounty(t)));
+					message = PlaceholderAPI.setPlaceholders(t, otherMessage);
 				} else {
-					message = TextUtils.replace(bountyDisabledMessage,
-					                            new ParamSubst("player", t.getDisplayName()));
+					message = PlaceholderAPI.setPlaceholders(t, bountyDisabledMessage);
 				}
 			}
 

@@ -17,6 +17,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 /**
  * A command to modify the list of emperors.
  */
@@ -26,6 +28,8 @@ public class SetEmperorsCommand implements CommandExecutor {
 	String insufficientArgumentsMessage;
 	String wrongSyntaxMessage;
 	String noPlayerMessage;
+
+	final static String permission = "piratebounties.emperors.set";
 
 	/**
 	 * Initializes the command, loading responses from the config file.
@@ -37,6 +41,9 @@ public class SetEmperorsCommand implements CommandExecutor {
 		insufficientArgumentsMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.insufficientArguments"));
 		wrongSyntaxMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.wrongSyntax"));
 		noPlayerMessage = TextUtils.msgFromConfig(config.getStringList("commandsErrorMessages.noPlayer"));
+
+		noPermissionMessage = TextUtils.replace(noPermissionMessage,
+		                                        new ParamSubst("permission", permission));
 	}
 
 	/**
@@ -54,10 +61,8 @@ public class SetEmperorsCommand implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			p = (Player) sender;
-			if (!p.hasPermission("piratebounties.emperors.set")) {
-				p.sendMessage(TextUtils.replace(noPermissionMessage,
-				                                new ParamSubst("player", p.getDisplayName()),
-				                                new ParamSubst("permission", "piratebounties.emperors.set")));
+			if (!p.hasPermission(permission)) {
+				p.sendMessage(PlaceholderAPI.setPlaceholders(p, noPermissionMessage));
 				return true;
 			}
 		}
@@ -65,34 +70,36 @@ public class SetEmperorsCommand implements CommandExecutor {
 		String message;
 
 		if (args.length < 1) {
-			message = TextUtils.replace(insufficientArgumentsMessage,
-			                            new ParamSubst("given", args.length),
-			                            new ParamSubst("needed", 2));
+			message = PlaceholderAPI.setPlaceholders(p,
+			                                         TextUtils.replace(insufficientArgumentsMessage,
+			                                                           new ParamSubst("given", args.length),
+			                                                           new ParamSubst("needed", 2)));
 		} else if (args.length < 2) {
 			if (args[0].equals("update")) {
 				EmperorsManager.update();
-				message = okMessage;
+				message = PlaceholderAPI.setPlaceholders(p, okMessage);
 			} else if (args[0].equals("clear")) {
 				EmperorsManager.clear();
-				message = okMessage;
+				message = PlaceholderAPI.setPlaceholders(p, okMessage);
 			} else {
-				message = wrongSyntaxMessage;
+				message = PlaceholderAPI.setPlaceholders(p, wrongSyntaxMessage);
 			}
 		} else {
 			Player t = Bukkit.getPlayer(args[1]);
 
 			if (t == null) {
-				message = TextUtils.replace(noPlayerMessage,
-				                            new ParamSubst("player", args[1]));
+				message = PlaceholderAPI.setPlaceholders(p,
+				                                         TextUtils.replace(noPlayerMessage,
+				                                                           new ParamSubst("player", args[1])));
 			} else {
 				if (args[0].equals("update")) {
 					EmperorsManager.updateSingle(t);
-					message = okMessage;
+					message = PlaceholderAPI.setPlaceholders(p, okMessage);
 				} else if (args[0].equals("remove")) {
 					EmperorsManager.remove(t);
-					message = okMessage;
+					message = PlaceholderAPI.setPlaceholders(p, okMessage);
 				} else {
-					message = wrongSyntaxMessage;
+					message = PlaceholderAPI.setPlaceholders(p, wrongSyntaxMessage);
 				}
 			}
 		}
