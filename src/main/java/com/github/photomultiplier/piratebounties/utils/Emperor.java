@@ -4,12 +4,11 @@
 
 package com.github.photomultiplier.piratebounties.utils;
 
+import java.io.Serializable;
+
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
 
-import java.io.Serializable;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 /**
@@ -21,9 +20,9 @@ public class Emperor implements Serializable {
 	 */
 	transient private Player player;
 	/**
-	 * The player's UUID.
+	 * The offline player.
 	 */
-	public UUID uuid;
+	public OfflinePlayer offlinePlayer;
 	/**
 	 * The player's display name.
 	 */
@@ -40,7 +39,7 @@ public class Emperor implements Serializable {
 	 */
 	public Emperor(Player player) {
 		this.player = player;
-		this.uuid = player.getUniqueId();
+		this.offlinePlayer = (OfflinePlayer) player;
 		this.displayName = player.getDisplayName();
 		this.bounty = BountyManager.getBounty(player);
 	}
@@ -51,8 +50,10 @@ public class Emperor implements Serializable {
 	 * @return The player on success, null otherwise.
 	 */
 	public Player getUpdatePlayer() {
-		if (player == null) {
-			player = Bukkit.getPlayer(uuid);
+		if (player == null && offlinePlayer.isOnline()) {
+			player = offlinePlayer.getPlayer();
+			displayName = player.getDisplayName();
+			bounty = BountyManager.getBounty(player);
 		}
 		return player;
 	}

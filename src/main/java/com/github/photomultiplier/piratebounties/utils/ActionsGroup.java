@@ -7,6 +7,7 @@ package com.github.photomultiplier.piratebounties.utils;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -52,16 +53,19 @@ public class ActionsGroup {
 	 * Execute the commands as the console and broadcast messages to whoever necessary.
 	 *
 	 * @param player The player to send messages to.  Can be null.
+	 * @param offlinePlayer OfflinePlayer to be used in command if player is null.
 	 */
-	public void execute(Player player) {
+	public void execute(Player player, OfflinePlayer offlinePlayer) {
 		if (enabled) {
 			if (commands.size() != 0) {
 				for (String command : commands) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), PlaceholderAPI.setPlaceholders(player, command));
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+					                       PlaceholderAPI.setPlaceholders(player == null ? offlinePlayer : player, command));
 				}
 			}
 			if (broadcastMessage != null) {
-				Bukkit.getServer().broadcastMessage(PlaceholderAPI.setPlaceholders(player, broadcastMessage));
+				Bukkit.getServer().broadcastMessage(PlaceholderAPI.setPlaceholders(player == null ? offlinePlayer : player,
+				                                                                   broadcastMessage));
 			}
 			if (playerMessage != null && player != null) {
 				player.sendMessage(PlaceholderAPI.setPlaceholders(player, playerMessage));

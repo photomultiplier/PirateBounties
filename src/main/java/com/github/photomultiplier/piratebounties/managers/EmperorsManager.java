@@ -129,7 +129,7 @@ public abstract class EmperorsManager {
 		// 4. No one gets added or removed
 
 		for (int i = 0; i < leaderBoard.l.length; i++) {
-			if (seen || (leaderBoard.l[i] != null && og.uuid.equals(leaderBoard.l[i].uuid))) {
+			if (seen || (leaderBoard.l[i] != null && og.offlinePlayer.getUniqueId().equals(leaderBoard.l[i].offlinePlayer.getUniqueId()))) {
 				if (i + 1 > emperorAmount) {
 					leaderBoard.l[i] = null;
 				} else {
@@ -167,7 +167,7 @@ public abstract class EmperorsManager {
 			// Cases 3 and 4
 			if (newEmperor != null) {
 				// Case 3
-				leaderboardLeave.execute(og.getUpdatePlayer());
+				leaderboardLeave.execute(og.getUpdatePlayer(), og.offlinePlayer);
 			} // else case 4, nothing to do
 		} else {
 			// Surely it hasn't been removed
@@ -175,13 +175,13 @@ public abstract class EmperorsManager {
 			if (newEmperor == null) {
 				// Surely it was added and surely everyone fit
 				// Case 2
-				leaderboardEnter.execute(og.getUpdatePlayer());
+				leaderboardEnter.execute(og.getUpdatePlayer(), og.offlinePlayer);
 			} else {
 				// Cases 1 and 4
-				if (!newEmperor.uuid.equals(og.uuid)) {
+				if (!newEmperor.offlinePlayer.getUniqueId().equals(og.offlinePlayer.getUniqueId())) {
 					// Case 1
-					leaderboardEnter.execute(og.getUpdatePlayer());
-					leaderboardLeave.execute(newEmperor.getUpdatePlayer());
+					leaderboardEnter.execute(og.getUpdatePlayer(), og.offlinePlayer);
+					leaderboardLeave.execute(newEmperor.getUpdatePlayer(), og.offlinePlayer);
 				} // else case 4, nothing to do
 			}
 		}
@@ -205,7 +205,7 @@ public abstract class EmperorsManager {
 		boolean seen = false;
 
 		for (int i = 0; i < leaderBoard.l.length; i++) {
-			if (seen || (leaderBoard.l[i] != null && uuid.equals(leaderBoard.l[i].uuid))) {
+			if (seen || (leaderBoard.l[i] != null && uuid.equals(leaderBoard.l[i].offlinePlayer.getUniqueId()))) {
 				if (i + 1 > emperorAmount) {
 					leaderBoard.l[i] = null;
 				} else {
