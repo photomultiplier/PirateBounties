@@ -6,7 +6,6 @@ package com.github.photomultiplier.piratebounties.commands;
 
 import com.github.photomultiplier.piratebounties.PirateBounties;
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
-import com.github.photomultiplier.piratebounties.managers.EmperorsManager;
 import com.github.photomultiplier.piratebounties.utils.ParamSubst;
 import com.github.photomultiplier.piratebounties.utils.TextUtils;
 
@@ -81,7 +80,6 @@ public class SetBountyCommand implements CommandExecutor {
 					try {
 						int newBounty = Integer.parseInt(args[1]);
 						BountyManager.setBounty(t, newBounty);
-						EmperorsManager.updateSingle(t);
 						message = TextUtils.replace(okMessage,
 						                            new ParamSubst("player", t.getDisplayName()),
 						                            new ParamSubst("bounty", newBounty));

@@ -5,7 +5,6 @@
 package com.github.photomultiplier.piratebounties.listeners;
 
 import com.github.photomultiplier.piratebounties.managers.BountyManager;
-import com.github.photomultiplier.piratebounties.managers.EmperorsManager;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,8 +27,6 @@ public class KillListener implements Listener {
 			Player killer = (Player) e.getDamager();
 			if (killed.getHealth() - e.getFinalDamage() <= 0.) {
 				BountyManager.registerKill(killed, killer);
-				EmperorsManager.updateSingle(killed);
-				EmperorsManager.updateSingle(killer);
 			}
 		}
 	}

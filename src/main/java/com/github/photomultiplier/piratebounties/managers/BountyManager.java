@@ -68,6 +68,7 @@ public abstract class BountyManager {
 
 			PersistentDataContainer pdc = p.getPersistentDataContainer();
 			pdc.set(key, PersistentDataType.INTEGER, newBounty);
+			EmperorsManager.updateSingle(p);
 		}
 	}
 
