@@ -29,19 +29,6 @@ public class Emperor implements Serializable {
 	public long bounty;
 
 	/**
-	 * Constructs an Emperor from its identifier, name and bounty.
-	 *
-	 * @param newUUID The player's unique identifier.
-	 * @param newDisplayName The player's name.
-	 * @param newBounty The player's bounty.
-	 */
-	public Emperor(UUID newUUID, String newDisplayName, int newBounty) {
-		uuid = newUUID;
-		displayName = newDisplayName;
-		bounty = newBounty;
-	}
-
-	/**
 	 * Constructs an Emperor from a Player.
 	 *
 	 * @param player The player of interest.
