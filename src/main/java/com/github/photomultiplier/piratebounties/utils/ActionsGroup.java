@@ -76,11 +76,11 @@ public class ActionsGroup {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), TextUtils.replace(command, substitutions));
 				}
 			}
-			if (playerMessage != null && player != null) {
-				player.sendMessage(TextUtils.replace(playerMessage, substitutions));
-			}
 			if (broadcastMessage != null) {
 				Bukkit.getServer().broadcastMessage(TextUtils.replace(broadcastMessage, substitutions));
+			}
+			if (playerMessage != null && player != null) {
+				player.sendMessage(TextUtils.replace(playerMessage, substitutions));
 			}
 		}
 	}
