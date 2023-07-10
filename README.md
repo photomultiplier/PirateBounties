@@ -36,6 +36,9 @@ balance.
 The players with the highest bounties above a certain threshold become
 emperors.  There's also a maximum number of emperors.
 
+Finally, the plugin offers configurable rewards to players who surpass
+certain bounty thresholds.
+
 ## A note on placeholders
 
 This plugin supports
@@ -93,6 +96,8 @@ Generic settings, affecting the core mechanic of the plugin.
   emperors - a quite resource intensive task if your server has many
   players.  Also keep in mind that any player can update his position
   on the leaderboard by simply reconnecting to the server.
+- `rewards`: a list of numbers.  Lists all bounty thresholds to be
+  rewarded.
 
 ### Category `events`
 
@@ -101,6 +106,8 @@ event.  Right now, the available events are:
 
 - `leaderboardEnter`, when a player enters the leaderboard.
 - `leaderboardLeave`, when a player leaves the leaderboard.
+- `<thr>Reward` (where `<thr>` is one of the thresholds set in
+  `general.rewards`), when a player obtains a reward.
 
 Each event field can have the same sub-fields to configure what
 happens when the event is fired:
@@ -143,6 +150,26 @@ events:
       - "&e&l *** %player_name%, with $%piratebounties_bounty% ***"
     broadcastMessage:
       - "&l%player_name% just became an emperor!"
+```
+
+And here is an example configuration for rewards:
+
+``` yaml
+general:
+  rewards:
+    - 10
+    - 100
+events:
+  10Reward:
+    enabled: true
+    playerMessage:
+      - "&lYou reached a bounty of $10!"
+      - "&e&l *** %player_name%, with $%piratebounties_bounty% ***"
+  100Reward:
+    enabled: true
+    playerMessage:
+      - "&lYou reached a bounty of $100!"
+      - "&e&l *** %player_name%, with $%piratebounties_bounty% ***"
 ```
 
 ### Category `files`
