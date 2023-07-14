@@ -32,21 +32,6 @@ public class ActionsGroup {
 	public String broadcastMessage;
 
 	/**
-	 * Constructs an ActionsGroup from raw parameters.
-	 *
-	 * @param enabled Is the action group enabled?
-	 * @param commands A list of commands to execute.
-	 * @param playerMessage A message to send to the player.
-	 * @param broadcastMessage A message to broadcast to everyone.
-	 */
-	public ActionsGroup(boolean enabled, List<String> commands, String playerMessage, String broadcastMessage) {
-		this.enabled = enabled;
-		this.commands = commands;
-		this.playerMessage = playerMessage;
-		this.broadcastMessage = broadcastMessage;
-	}
-
-	/**
 	 * Constructs an ActionsGroup from a configuration file and event name.
 	 *
 	 * @param config The {@link FileConfiguration}.
