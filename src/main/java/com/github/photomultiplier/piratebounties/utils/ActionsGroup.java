@@ -71,7 +71,7 @@ public class ActionsGroup {
 	 */
 	public void execute(Player player, ParamSubst... substitutions) {
 		if (enabled) {
-			if (commands != null) {
+			if (commands.size() != 0) {
 				for (String command : commands) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), TextUtils.replace(command, substitutions));
 				}
