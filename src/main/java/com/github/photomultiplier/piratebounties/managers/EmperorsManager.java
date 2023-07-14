@@ -28,6 +28,8 @@ public abstract class EmperorsManager {
 	static BukkitScheduler scheduler = Bukkit.getScheduler();
 	static long emperorThreshold = 1l;
 	static int emperorAmount = 1;
+	static int emperorTotal = 1;
+	static boolean recalculateIfVacant = false;
 	static File dataFile;
 	static EmperorLeaderboard leaderBoard = new EmperorLeaderboard(4);
 	static ActionsGroup leaderboardEnter;
@@ -68,6 +70,14 @@ public abstract class EmperorsManager {
 		FileConfiguration config = pg.getConfig();
 		emperorThreshold = config.getLong("general.emperorThreshold");
 		emperorAmount = config.getInt("general.emperorAmount");
+		emperorTotal = config.getInt("general.emperorTotal");
+
+		if (emperorTotal < emperorAmount) {
+			Bukkit.getLogger().warning("The total number of emperors must be greater than the amount of emperors!");
+			emperorTotal = emperorAmount;
+		}
+
+		recalculateIfVacant = config.getBoolean("general.recalculateLeaderboardIfVacant");
 		leaderboardEnter = new ActionsGroup(config, "leaderboardEnter");
 		leaderboardLeave = new ActionsGroup(config, "leaderboardLeave");
 
@@ -81,7 +91,7 @@ public abstract class EmperorsManager {
 		leaderBoard = EmperorLeaderboard.loadData(dataFile.getAbsolutePath());
 
 		if (leaderBoard == null) {
-			leaderBoard = new EmperorLeaderboard(emperorAmount);
+			leaderBoard = new EmperorLeaderboard(emperorTotal);
 		}
 	}
 
@@ -120,69 +130,104 @@ public abstract class EmperorsManager {
 		Emperor og = newEmperor;
 		boolean seen = false;
 
-		// Four things may happen:
-		// 1. newEmperor gets added and the last emperor is removed as
-		// there wasn't space on the leaderboard
-		// 2. newEmperor gets added but no one is removed as there was
-		// space on the leaderboard
-		// 3. newEmperor gets removed
-		// 4. No one gets added or removed
+		for (int i=0; i < leaderBoard.l.length; i++) {
+			Emperor nextEmperor;
 
-		for (int i = 0; i < leaderBoard.l.length; i++) {
-			if (seen || (leaderBoard.l[i] != null && og.offlinePlayer.getUniqueId().equals(leaderBoard.l[i].offlinePlayer.getUniqueId()))) {
-				if (i + 1 > emperorAmount) {
-					leaderBoard.l[i] = null;
-				} else {
-					leaderBoard.l[i] = leaderBoard.l[i + 1];
-				}
+			if (i+1 >= leaderBoard.l.length) {
+				nextEmperor = null;
+			} else {
+				nextEmperor = leaderBoard.l[i+1];
+			}
+
+			if (seen || (leaderBoard.l[i] != null && leaderBoard.l[i]
+			             .offlinePlayer.getUniqueId().equals(og.offlinePlayer.getUniqueId()))) {
+				leaderBoard.l[i] = nextEmperor;
+				nextEmperor = null;
 				seen = true;
 			}
 
-			if (leaderBoard.l[i] == null) {
-				if (newEmperor.bounty >= emperorThreshold) {
+			if (leaderBoard.l[i] != null) {
+				if (newEmperor != null && newEmperor.bounty >= leaderBoard.l[i].bounty) {
+					Emperor buffer = newEmperor;
+					newEmperor = leaderBoard.l[i];
+					leaderBoard.l[i] = buffer;
+				}
+			} else {
+				if (newEmperor != null && newEmperor.bounty > emperorThreshold) {
 					leaderBoard.l[i] = newEmperor;
 					newEmperor = null;
 				}
-				break;
-			} else {
-				if (newEmperor.bounty >= leaderBoard.l[i].bounty) {
-					if (seen) {
-						leaderBoard.l[i] = newEmperor;
-						newEmperor = null;
-						break;
-					} else {
-						Emperor buffer = leaderBoard.l[i];
-						leaderBoard.l[i] = newEmperor;
-						newEmperor = buffer;
-						if (newEmperor == null) {
-							break;
+			}
+
+			// This is what could have happened:
+			// newEmperor not added (0), list unchanged
+			// newEmperor added (+)
+			//   someone at the end may have been dropped (+-)
+			// newEmperor dropped (-)
+			//   someone at the end may have been added (-+)
+			// newEmperor moved inside the list (~)
+
+			if (i == emperorAmount-1 || (i < emperorAmount && leaderBoard.l[i] == null)) {
+				if (newEmperor != null) {
+					// Someone dropped
+					// 0, +-, -, -+
+					if (newEmperor.offlinePlayer.getUniqueId().equals(og.offlinePlayer.getUniqueId())) {
+						// newEmperor dropped
+						// 0, -, -+
+						if (seen) {
+							// newEmperor was on leaderboard
+							// -, -+
+
+							if (leaderBoard.l[emperorAmount-1] != null) {
+								// Someone at the end added
+								// -+
+								leaderboardLeave.execute(og.getUpdatePlayer(), og.offlinePlayer);
+								leaderboardEnter.execute(leaderBoard.l[emperorAmount-1].getUpdatePlayer(),
+								                         leaderBoard.l[emperorAmount-1].offlinePlayer);
+							} else {
+								// No one was added
+								// -
+								leaderboardLeave.execute(og.getUpdatePlayer(), og.offlinePlayer);
+								// This means that a place on the leaderboard is left vacant!
+								// This could be correct (e.g. if there aren't enough player to fill the
+								// leaderboard), but it could also mean that an emperor was kicked off the list
+								// and forgotten.
+								// The quick solution for said emperor is just to reconnect to the server, but
+								// the real fix would be recalculating the whole leaderboard when this happens.
+								// That said, we'll let the server owner decide what to do.
+								if (recalculateIfVacant) {
+									update();
+								}
+							}
+						} else {
+							// newEmperor wasn't on leaderboard
+							// 0
 						}
+					} else {
+						// newEmperor else dropped
+						// +-
+								leaderboardEnter.execute(og.getUpdatePlayer(), og.offlinePlayer);
+								leaderboardLeave.execute(newEmperor.getUpdatePlayer(), newEmperor.offlinePlayer);
+					}
+				} else {
+					// No drops
+					// +, ~
+					if (seen) {
+						// newEmperor was on leaderboard
+						// ~
+					} else {
+						// newEmperor wasn't on leaderboard
+						// +
+						leaderboardEnter.execute(og.getUpdatePlayer(), og.offlinePlayer);
 					}
 				}
 			}
-		}
 
-		if (seen) {
-			// Surely it hasn't been added
-			// Cases 3 and 4
-			if (newEmperor != null) {
-				// Case 3
-				leaderboardLeave.execute(og.getUpdatePlayer(), og.offlinePlayer);
-			} // else case 4, nothing to do
-		} else {
-			// Surely it hasn't been removed
-			// Cases 1, 2 and 4
-			if (newEmperor == null) {
-				// Surely it was added and surely everyone fit
-				// Case 2
-				leaderboardEnter.execute(og.getUpdatePlayer(), og.offlinePlayer);
-			} else {
-				// Cases 1 and 4
-				if (!newEmperor.offlinePlayer.getUniqueId().equals(og.offlinePlayer.getUniqueId())) {
-					// Case 1
-					leaderboardEnter.execute(og.getUpdatePlayer(), og.offlinePlayer);
-					leaderboardLeave.execute(newEmperor.getUpdatePlayer(), og.offlinePlayer);
-				} // else case 4, nothing to do
+			if (leaderBoard.l[i] == null) {
+				// As the list can't have holes in this point of the loop,
+				// and as we've already warned everyone, we can safely
+				// break out of the loop.
+				break;
 			}
 		}
 	}
@@ -205,8 +250,14 @@ public abstract class EmperorsManager {
 		boolean seen = false;
 
 		for (int i = 0; i < leaderBoard.l.length; i++) {
-			if (seen || (leaderBoard.l[i] != null && uuid.equals(leaderBoard.l[i].offlinePlayer.getUniqueId()))) {
-				if (i + 1 > emperorAmount) {
+			if (leaderBoard.l[i] != null && uuid.equals(leaderBoard.l[i].offlinePlayer.getUniqueId())) {
+				leaderboardLeave.execute(leaderBoard.l[i].getUpdatePlayer(),
+				                         leaderBoard.l[i].offlinePlayer);
+				seen = true;
+			}
+
+			if (seen) {
+				if (i + 1 > leaderBoard.l.length) {
 					leaderBoard.l[i] = null;
 				} else {
 					leaderBoard.l[i] = leaderBoard.l[i + 1];
@@ -233,6 +284,14 @@ public abstract class EmperorsManager {
 	 * Empties the leaderboard.
 	 */
 	public static void clear() {
-		leaderBoard = new EmperorLeaderboard(emperorAmount);
+		for (int i = 0; i < leaderBoard.l.length; i++) {
+			if (leaderBoard.l[i] == null) {
+				break;
+			}
+
+			leaderboardLeave.execute(leaderBoard.l[i].getUpdatePlayer(),
+			                         leaderBoard.l[i].offlinePlayer);
+			leaderBoard.l[i] = null;
+		}
 	}
 }

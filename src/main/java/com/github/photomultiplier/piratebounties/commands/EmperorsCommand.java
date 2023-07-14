@@ -88,7 +88,7 @@ public class EmperorsCommand implements CommandExecutor {
 				Bukkit.getLogger().info(ChatColor.stripColor(message));
 			}
 
-			for (int i = 0; i < leaderBoard.length; i++) {
+			for (int i = 0; i < EmperorsManager.getEmperorAmount(); i++) {
 				Emperor emperor = leaderBoard[i];
 
 				if (emperor == null) {
