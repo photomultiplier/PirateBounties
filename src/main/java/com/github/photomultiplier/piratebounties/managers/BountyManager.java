@@ -87,7 +87,14 @@ public abstract class BountyManager {
 			}
 
 			PersistentDataContainer pdc = p.getPersistentDataContainer();
-			long oldBounty = pdc.get(key, PersistentDataType.LONG);
+			long oldBounty;
+			try {
+				oldBounty = pdc.get(key, PersistentDataType.LONG);
+			} catch (IllegalArgumentException e) {
+				// The NBT tag already existed, but it's the wrong type.
+				pdc.remove(key);
+				oldBounty = 0;
+			}
 			pdc.set(key, PersistentDataType.LONG, newBounty);
 
 			for (int i = 0; i < rewardLevels.size(); i++) {
