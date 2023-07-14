@@ -9,7 +9,7 @@ java {
 }
 
 group 'com.github.photomultiplier'
-version '1.5.2'
+version '2.0.0'
 
 jar {
     processResources.exclude('*~')
